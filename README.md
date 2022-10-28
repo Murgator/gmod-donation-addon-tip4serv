@@ -1,3 +1,5 @@
+## Donation addon for Garry's Mod (Tip4Serv)
+
 This addon connects your [Tip4serv.com](https://tip4serv.com/) store to your Garry's mod server. It checks if a player has made a donation on your Tip4Serv store and delivers the order in a minute (group, money...) by typing commands in the server console.
 
 ## HMAC authentication
