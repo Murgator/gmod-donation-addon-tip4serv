@@ -49,6 +49,8 @@ Open an account on [Tip4serv.com](https://tip4serv.com/), follow the instruction
 
 ***Before setting up your commands on Tip4serv.com, you should know that command work in your server's console (not ingame as an admin).***
 
+***Make sure that there is at least 1 player connected on your server when you test the commands, otherwise the commands will not be processed.***
+
 Here are some commands you can use in the products configuration: [MY PRODUCTS](https://tip4serv.com/dashboard/my-products)
 
 Add a player to a group (ULX):
