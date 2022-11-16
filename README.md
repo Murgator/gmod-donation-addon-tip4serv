@@ -56,11 +56,13 @@ Here are some commands you can use in the products configuration: [MY PRODUCTS](
 Add a player to a group (ULX):
 
 `ulx adduserid {steam_id} group-name`
+
 `ulx adduser {gmod_username} group-name`
 
 Remove a player from a group (ULX):
 
 `ulx removeuserid {steam_id} group-name`
+
 `ulx removeuser {gmod_username} group-name`
 
 Give money to a player (DarkRP):
