@@ -57,11 +57,15 @@ Add a player to a group (ULX):
 
 `ulx adduserid {steam_id} group-name`
 
+or
+
 `ulx adduser {gmod_username} group-name`
 
 Remove a player from a group (ULX):
 
 `ulx removeuserid {steam_id} group-name`
+
+or
 
 `ulx removeuser {gmod_username} group-name`
 
