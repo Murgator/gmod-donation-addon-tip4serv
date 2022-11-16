@@ -57,9 +57,17 @@ Add a player to a group (ULX):
 
 `ulx adduser {gmod_username} group-name`
 
+or
+
+`ulx adduserid {steam_id} group-name`
+
 Remove a player from a group (ULX):
 
 `ulx removeuser {gmod_username} group-name`
+
+or
+
+`ulx removeuserid {steam_id} group-name`
 
 Give money to a player (DarkRP):
 
