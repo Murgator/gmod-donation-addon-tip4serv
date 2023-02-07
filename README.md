@@ -1,6 +1,6 @@
 ## Donation addon for Garry's Mod (Tip4Serv)
 
-This addon connects your [Tip4serv.com](https://tip4serv.com/) store to your Garry's mod server. It checks if a player has made a donation on your Tip4Serv store and delivers the order in a minute (group, money...) by typing commands in the server console.
+This addon connects your [Tip4serv.com](https://tip4serv.com/?ads=github) store to your Garry's mod server. It checks if a player has made a donation on your Tip4Serv store and delivers the order in a minute (group, money...) by typing commands in the server console.
 
 ## HMAC authentication
 
@@ -37,7 +37,7 @@ Here are the payment methods you can offer your players: Card, Paypal, Google Pa
 
 ## Installation
 
-Open an account on [Tip4serv.com](https://tip4serv.com/), follow the instructions and add a Gmod server.
+Open an account on [Tip4serv.com](https://tip4serv.com/?ads=github), follow the instructions and add a Gmod server.
 
 1) Drag and drop `tip4serv` folder into `addons` directory on your Gmod server.
 2) Restart your server and set `key` to your tip4serv API key in `data/tip4serv/config.json`.
