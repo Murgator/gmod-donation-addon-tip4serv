@@ -3,7 +3,7 @@
 include("autorun/sha256.lua")
 
 local response_path = "tip4serv/response.json"
-Config = Config or {}
+local Config = {}
 Config.data =  {
     ["key"] = "YOUR_API_KEY",
     ["request_interval_in_minutes"] = "2",
