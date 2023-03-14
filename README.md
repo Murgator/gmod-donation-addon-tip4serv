@@ -75,4 +75,6 @@ Give money to a player (DarkRP):
 
 ## Need help?
 
+[Documentation](https://docs.tip4serv.com)
+
 [Contact us](https://tip4serv.com/contact)
