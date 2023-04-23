@@ -1,4 +1,4 @@
---Tip4serv plugin 1.1.2
+--Tip4serv plugin 1.2.0
 
 include("autorun/sha256.lua")
 if not Tip4serv then
