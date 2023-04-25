@@ -150,13 +150,13 @@ if not Tip4serv then
     
     -- URL Encoding algorithm for sending transaction data
     Tip4serv.urlencode = function(url)
-      if url == nil then
-        return
-      end
-      url = url:gsub("\n", "\r\n")
-      url = url:gsub("([^%w ])", char_to_hex)
-      url = url:gsub(" ", "+")
-      return url
+        if url == nil then
+            return
+        end
+        url = url:gsub("\n", "\r\n")
+        url = url:gsub("([^%w ])", char_to_hex)
+        url = url:gsub(" ", "+")
+        return url
     end
     
     -- Execute commands on the server
