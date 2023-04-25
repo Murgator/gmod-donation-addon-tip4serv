@@ -1,7 +1,11 @@
---Tip4serv plugin 1.2.0
+--Tip4serv plugin 1.1.3
 
 include("autorun/sha256.lua")
+
+--Tip4serv class
 if not Tip4serv then
+    --class members
+
     Tip4serv = {}
     Tip4serv.response_path = "tip4serv/response.json"
     Tip4serv.Config = {}
@@ -10,6 +14,9 @@ if not Tip4serv then
         ["request_interval_in_minutes"] = "2",
         ["order_received_text"] = "Thank you for your purchase :)"
     }
+
+    --class methods
+
     function Tip4serv.Config.CreateConfig() 
         if not file.Exists("tip4serv".."/config.json","DATA") then 
             file.CreateDir("tip4serv")
@@ -26,7 +33,7 @@ if not Tip4serv then
         --MAC calculation        
         local MAC = Tip4serv.calculateHMAC(server_id, public_key, private_key, timestamp)
         --Get last infos json file
-        local response = LoadResourceFile(Tip4serv.response_path)
+        local response = Tip4serv_LoadResourceFile(Tip4serv.response_path)
         local json_encoded = ""
         if (response) then
             json_encoded = Tip4serv.urlencode(response)
@@ -50,7 +57,7 @@ if not Tip4serv then
             local json_decoded = util.JSONToTable(tip4serv_response)        
             if (json_decoded == nil) then
                 if string.match(tip4serv_response, "No pending payments found") then
-                    SaveResourceFile(Tip4serv.response_path, "")
+                    Tip4serv_SaveResourceFile(Tip4serv.response_path, "")
                     --MsgC(Color(0,255,0),tip4serv_response) 
                     return                
                 elseif string.match(tip4serv_response, "Tip4serv") then
@@ -59,7 +66,7 @@ if not Tip4serv then
                 end    
             end
             --Clear old json infos
-            SaveResourceFile(Tip4serv.response_path, "")
+            Tip4serv_SaveResourceFile(Tip4serv.response_path, "")
             --Loop customers
             local new_json = {}
         
@@ -95,7 +102,7 @@ if not Tip4serv then
                 end
             end
             --Save the new json file
-            SaveResourceFile(Tip4serv.response_path, util.TableToJSON(new_json))
+            Tip4serv_SaveResourceFile(Tip4serv.response_path, util.TableToJSON(new_json))
         end, function(message) end, { ['Authorization'] = MAC })          
     end    
     local char_to_hex = function(c)
@@ -109,7 +116,6 @@ if not Tip4serv then
                 end
             end
         end    
-        
         return false
     end
     Tip4serv.base64_encode = function ( data )
@@ -159,35 +165,47 @@ if not Tip4serv then
     end
 end
 
--- Checks if a purchase has been made every x minutes
-function checkPayment_every_x_min()
-    if check_api_key_validity() == false then return end
-    Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),"yes")
-end
+
+-- ONSTART AREA
+
 
 -- Check Tip4serv connection on script start
 timer.Simple(0,function()
     Tip4serv.Config.CreateConfig()
     Tip4serv.Config.Load()
-    timer.Create( "CheckPaymentLoop", tonumber(Tip4serv.Config.data.request_interval_in_minutes)*60, 0, function() checkPayment_every_x_min() end ) 
-    if check_api_key_validity() == false then return end
+    timer.Create( "Tip4serv_CheckPaymentLoop", tonumber(Tip4serv.Config.data.request_interval_in_minutes)*60, 0, function() Tip4serv_checkPayment_every_x_min() end ) 
+    if Tip4serv_check_api_key_validity() == false then return end
     Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),"no")
 end)
 
 -- Tip4serv connect command
 concommand.Add("tip4serv",function(ply,cmd,args)
+    --Only allow commands directly from server
+    if IsValid(ply) then return end
+
     if(args[1] == "connect") then 
         Tip4serv.Config.CreateConfig()
         Tip4serv.Config.Load()
         MsgC(Color(0,255,0),"Connecting to Tip4Serv...\n")
-        if check_api_key_validity() == false then return end
+        if Tip4serv_check_api_key_validity() == false then return end
         Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),"no")
     else 
         MsgC(Color(255,0,0),"Invalid Tip4serv command, correct use: tip4serv connect\n")
     end
 end)
 
-function check_api_key_validity()
+
+--External functions
+
+
+-- Checks if a purchase has been made every x minutes
+function Tip4serv_checkPayment_every_x_min()
+    if Tip4serv_check_api_key_validity() == false then return end
+    Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),"yes")
+end
+
+
+function Tip4serv_check_api_key_validity()
     local missing_key = "[Tip4serv error] Please set key to a valid API key in data/tip4serv/config.json then restart tip4serv resource. Make sure you have copied the entire key on Tip4serv.com (CTRL+A then CTRL+C)"
     key_arr = {} i = 0
     for info in string.gmatch(Tip4serv.Config.data.key, '([^.]+)') do key_arr[i] = info i = i+1 end
@@ -198,7 +216,7 @@ function check_api_key_validity()
 end
 
 -- Utils functions
-function LoadResourceFile(path) 
+function Tip4serv_LoadResourceFile(path) 
     if not file.Exists(path,"DATA") then 
         file.CreateDir("tip4serv")
         file.Write(path,"")
@@ -207,6 +225,6 @@ function LoadResourceFile(path)
     if not data then MsgC(Color(255,0,0),"Error while trying to read Tip4serv file\n") return end
     return data
 end
-function SaveResourceFile(path,data)
+function Tip4serv_SaveResourceFile(path,data)
     file.Write(path,data)
 end
