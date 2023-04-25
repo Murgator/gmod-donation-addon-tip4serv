@@ -3,11 +3,9 @@
 include("autorun/sha256.lua")
 
 -- Tip4serv class
-if not Tip4serv then
+if not Tip4serv then    
     
-    
-    -- class members
-    
+    -- CLASS MEMBERS    
 
     Tip4serv = {}
     Tip4serv.response_path = "tip4serv/response.json"
@@ -17,10 +15,8 @@ if not Tip4serv then
         ["request_interval_in_minutes"] = "2",
         ["order_received_text"] = "Thank you for your purchase :)"
     }
-
     
-    -- class methods
-
+    -- CLASS METHODS
     
     -- Generates config files for tip4serv
     function Tip4serv.Config.CreateConfig() 
@@ -216,7 +212,7 @@ concommand.Add("tip4serv",function(ply,cmd,args)
 end)
 
 
--- External functions
+-- EXTERNAL FUNCTIONS
 
 
 -- Checks if a purchase has been made every x minutes
@@ -237,7 +233,7 @@ function Tip4serv_check_api_key_validity()
 end
 
 
--- Utils functions
+-- UTILS FUNCTIONS
 
 
 -- Load transactions files
