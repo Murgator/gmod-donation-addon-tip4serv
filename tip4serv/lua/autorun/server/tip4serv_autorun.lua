@@ -1,10 +1,13 @@
---Tip4serv plugin 1.1.3
+-- Tip4serv plugin 1.1.3
 
 include("autorun/sha256.lua")
 
 -- Tip4serv class
 if not Tip4serv then
+    
+    
     -- class members
+    
 
     Tip4serv = {}
     Tip4serv.response_path = "tip4serv/response.json"
