@@ -112,7 +112,7 @@ if not Tip4serv then
     
     -- Characters to hexadecimal (used for URL ENCODING)
     local char_to_hex = function(c)
-      return string.format("%%%02X", string.byte(c))
+        return string.format("%%%02X", string.byte(c))
     end    
     
     -- Loop over the playerlist & return a boolean if the player is connected
