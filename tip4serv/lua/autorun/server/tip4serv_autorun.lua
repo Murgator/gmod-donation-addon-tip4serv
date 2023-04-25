@@ -1,4 +1,4 @@
--- Tip4serv plugin 1.1.3
+-- Tip4serv plugin 1.2.1
 
 include("tip4serv/sha256.lua")
 
