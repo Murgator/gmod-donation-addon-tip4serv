@@ -15,14 +15,17 @@ if not Tip4serv then
         ["order_received_text"] = "Thank you for your purchase :)"
     }
 
+    
     --class methods
 
+    
     function Tip4serv.Config.CreateConfig() 
         if not file.Exists("tip4serv".."/config.json","DATA") then 
             file.CreateDir("tip4serv")
             file.Write("tip4serv".."/config.json",util.TableToJSON(Tip4serv.Config.data,true))
         end
     end
+    
     function Tip4serv.Config.Load()
         local data = file.Read("tip4serv".."/config.json","DATA")
         if not data then MsgC(Color(255,0,0),"Config file not found for Tip4serv\n") return end
@@ -105,9 +108,11 @@ if not Tip4serv then
             Tip4serv_SaveResourceFile(Tip4serv.response_path, util.TableToJSON(new_json))
         end, function(message) end, { ['Authorization'] = MAC })          
     end    
+    
     local char_to_hex = function(c)
       return string.format("%%%02X", string.byte(c))
     end    
+    
     Tip4serv.checkifPlayerIsLoaded = function ( infos)
         if infos["steamid"] ~= "" then
             for i, v in ipairs( player.GetAll() ) do
@@ -118,6 +123,7 @@ if not Tip4serv then
         end    
         return false
     end
+    
     Tip4serv.base64_encode = function ( data )
         local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
         return ((data:gsub('.', function(x) 
@@ -131,10 +137,12 @@ if not Tip4serv then
             return b:sub(c+1,c+1)
         end)..({ '', '==', '=' })[#data%3+1])
     end
+    
     Tip4serv.calculateHMAC = function (server_id, public_key, private_key, timestamp)
         local datas = server_id..public_key..timestamp
         return Tip4serv.base64_encode(sha256.hmac_sha256(private_key, datas))
     end
+    
     Tip4serv.urlencode = function(url)
       if url == nil then
         return
@@ -144,6 +152,7 @@ if not Tip4serv then
       url = url:gsub(" ", "+")
       return url
     end
+    
     Tip4serv.exe_command = function(cmd)        
         MsgC(Color(0,255,0),"[Tip4serv] execute command: "..cmd)
         argv_gmod =  Tip4serv.split(cmd," ")
@@ -151,6 +160,7 @@ if not Tip4serv then
         argv_gmod[0] =nil
         RunConsoleCommand(main_cmd,unpack(argv_gmod))
     end
+    
     Tip4serv.split =  function(inputstr, sep)
         if sep == nil then
             sep = "%s"
@@ -182,7 +192,6 @@ end)
 concommand.Add("tip4serv",function(ply,cmd,args)
     --Only allow commands directly from server
     if IsValid(ply) then return end
-
     if(args[1] == "connect") then 
         Tip4serv.Config.CreateConfig()
         Tip4serv.Config.Load()
@@ -204,7 +213,6 @@ function Tip4serv_checkPayment_every_x_min()
     Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),"yes")
 end
 
-
 function Tip4serv_check_api_key_validity()
     local missing_key = "[Tip4serv error] Please set key to a valid API key in data/tip4serv/config.json then restart tip4serv resource. Make sure you have copied the entire key on Tip4serv.com (CTRL+A then CTRL+C)"
     key_arr = {} i = 0
@@ -215,7 +223,10 @@ function Tip4serv_check_api_key_validity()
     end  
 end
 
+
 -- Utils functions
+
+
 function Tip4serv_LoadResourceFile(path) 
     if not file.Exists(path,"DATA") then 
         file.CreateDir("tip4serv")
