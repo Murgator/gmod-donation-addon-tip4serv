@@ -18,7 +18,7 @@ if not Tip4serv then
     
     --class methods
 
-    
+    --Generates config files for tip4serv
     function Tip4serv.Config.CreateConfig() 
         if not file.Exists("tip4serv".."/config.json","DATA") then 
             file.CreateDir("tip4serv")
@@ -26,12 +26,14 @@ if not Tip4serv then
         end
     end
     
+    --Load config files for tip4serv
     function Tip4serv.Config.Load()
         local data = file.Read("tip4serv".."/config.json","DATA")
         if not data then MsgC(Color(255,0,0),"Config file not found for Tip4serv\n") return end
         Tip4serv.Config.data = util.JSONToTable(data)
     end
 
+    --Main Function of the class : retrieve transactions, handle transactions & send transaction status
     Tip4serv.check_pending_commands = function (server_id,private_key,public_key,timestamp,get_cmd)
         --MAC calculation        
         local MAC = Tip4serv.calculateHMAC(server_id, public_key, private_key, timestamp)
@@ -109,10 +111,12 @@ if not Tip4serv then
         end, function(message) end, { ['Authorization'] = MAC })          
     end    
     
+    -- characters to hexadecimal (used for URL ENCODING)
     local char_to_hex = function(c)
       return string.format("%%%02X", string.byte(c))
     end    
     
+    --Loop over the playerlist & return a boolean if the player is connected
     Tip4serv.checkifPlayerIsLoaded = function ( infos)
         if infos["steamid"] ~= "" then
             for i, v in ipairs( player.GetAll() ) do
@@ -124,6 +128,7 @@ if not Tip4serv then
         return false
     end
     
+    --Base64 encoding algorithm
     Tip4serv.base64_encode = function ( data )
         local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
         return ((data:gsub('.', function(x) 
@@ -138,11 +143,13 @@ if not Tip4serv then
         end)..({ '', '==', '=' })[#data%3+1])
     end
     
+    --Decrypt the secret key
     Tip4serv.calculateHMAC = function (server_id, public_key, private_key, timestamp)
         local datas = server_id..public_key..timestamp
         return Tip4serv.base64_encode(sha256.hmac_sha256(private_key, datas))
     end
     
+    --URL Encoding algorithm for sending transaction data
     Tip4serv.urlencode = function(url)
       if url == nil then
         return
@@ -153,6 +160,7 @@ if not Tip4serv then
       return url
     end
     
+    --Execute commands on the server
     Tip4serv.exe_command = function(cmd)        
         MsgC(Color(0,255,0),"[Tip4serv] execute command: "..cmd)
         argv_gmod =  Tip4serv.split(cmd," ")
@@ -161,6 +169,7 @@ if not Tip4serv then
         RunConsoleCommand(main_cmd,unpack(argv_gmod))
     end
     
+    --Split the differents commands to execute
     Tip4serv.split =  function(inputstr, sep)
         if sep == nil then
             sep = "%s"
@@ -213,6 +222,7 @@ function Tip4serv_checkPayment_every_x_min()
     Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),"yes")
 end
 
+--Verify if the secret key is valid
 function Tip4serv_check_api_key_validity()
     local missing_key = "[Tip4serv error] Please set key to a valid API key in data/tip4serv/config.json then restart tip4serv resource. Make sure you have copied the entire key on Tip4serv.com (CTRL+A then CTRL+C)"
     key_arr = {} i = 0
@@ -226,7 +236,7 @@ end
 
 -- Utils functions
 
-
+--Load transactions files
 function Tip4serv_LoadResourceFile(path) 
     if not file.Exists(path,"DATA") then 
         file.CreateDir("tip4serv")
@@ -236,6 +246,8 @@ function Tip4serv_LoadResourceFile(path)
     if not data then MsgC(Color(255,0,0),"Error while trying to read Tip4serv file\n") return end
     return data
 end
+
+--Save transaction files
 function Tip4serv_SaveResourceFile(path,data)
     file.Write(path,data)
 end
