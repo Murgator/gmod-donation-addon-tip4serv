@@ -33,7 +33,9 @@ if not Tip4serv then
         Tip4serv.Config.data = util.JSONToTable(data)
     end
 
-    -- Main Function of the class : retrieve transactions, handle transactions & send transaction status
+    -- MAIN FUNCTIONS
+    
+    -- Retrieve transactions, handle transactions & send transaction status
     Tip4serv.check_pending_commands = function (server_id,private_key,public_key,timestamp,get_cmd)
         -- MAC calculation        
         local MAC = Tip4serv.calculateHMAC(server_id, public_key, private_key, timestamp)
