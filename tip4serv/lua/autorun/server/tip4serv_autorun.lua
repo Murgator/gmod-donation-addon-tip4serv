@@ -18,6 +18,7 @@ if not Tip4serv then
     
     -- class methods
 
+    
     -- Generates config files for tip4serv
     function Tip4serv.Config.CreateConfig() 
         if not file.Exists("tip4serv".."/config.json","DATA") then 
