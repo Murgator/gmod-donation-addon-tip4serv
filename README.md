@@ -39,8 +39,8 @@ Here are the payment methods you can offer your players: Card, Paypal, Google Pa
 
 Open an account on [Tip4serv.com](https://tip4serv.com/?ads=github), follow the instructions and add a Gmod server.
 
-1) Drag and drop `tip4serv` folder into `addons` directory on your Gmod server.
-2) Restart your server and set `key` to your tip4serv API key in `data/tip4serv/config.json`.
+1) Drag and drop `tip4serv` folder into `garrysmod/addons` directory on your Gmod server.
+2) Restart your server and set `key` to your tip4serv API key in `garrysmod/data/tip4serv/config.json`.
 3) Type `tip4serv connect` in your Gmod server console.
 
 > You should get this message: **Server has been successfully connected**
