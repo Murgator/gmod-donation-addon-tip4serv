@@ -1,8 +1,6 @@
 -- Tip4serv plugin 1.2.1
 include("tip4serv/tip4serv.lua")
 
-
-
 -- Check Tip4serv connection on script start
 timer.Simple(0,function()
     Tip4serv.Config.CreateConfig()
