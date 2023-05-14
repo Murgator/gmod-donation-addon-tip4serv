@@ -1,8 +1,8 @@
-
 -- File Manager class : handles the I/O for the data files --
 
 if not File_manager then
     File_manager = {}
+    
     -- Load transactions files
     File_manager.load_resource_file = function(path)
         if not file.Exists(path,"DATA") then 
