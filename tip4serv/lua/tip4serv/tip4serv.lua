@@ -69,7 +69,7 @@ if not Tip4serv then
             local json_decoded = util.JSONToTable(tip4serv_response)        
             if (json_decoded == nil) then
                 if string.match(tip4serv_response, "No pending payments found") then
-                    File_manager.save_resource_file(Tip4serv.response_path,"")
+                    file.write(Tip4serv.response_path,"")
                     return                
                 elseif string.match(tip4serv_response, "Tip4serv") then
                     MsgC(Color(0,255,0),tip4serv_response) 
@@ -77,17 +77,22 @@ if not Tip4serv then
                 end    
             end
             -- Clear old json infos
-            File_manager.save_resource_file(Tip4serv.response_path,"");
+            file.write(Tip4serv.response_path,"");
             -- Loop customers
             local new_json = {}
-        
+            ---build a hash map about the current customers
+            local customers = Tip4serv.getCustomers(json_decoded) 
+            customers = Tip4serv.checkifPlayerIsLoaded(customers);
             for k,infos in ipairs(json_decoded) do
                 local new_obj = {} local new_cmds = {}
                 new_obj["date"] = os.date("%c")
                 new_obj["action"] = infos["action"]
                 -- Check if player is online and get username
-                player_infos = Tip4serv.checkifPlayerIsLoaded(infos)
-                
+                player_infos =  customers[infos["steamid"]]
+                if player_infos == false then
+                    player_infos = nil
+                end
+
                 if player_infos then
                     player_infos:PrintMessage(HUD_PRINTTALK,Tip4serv.Config.data.order_received_text)
                 end
@@ -113,45 +118,37 @@ if not Tip4serv then
                 end
             end
             -- Save the new json file
-            File_manager.save_resource_file(Tip4serv.response_path,util.TableToJSON(new_json))
+            file.write(Tip4serv.response_path,util.TableToJSON(new_json))
         end, function(message) end, { ['Authorization'] = MAC })          
     end    
     
     -- Characters to hexadecimal (used for URL ENCODING)
     local char_to_hex = function(c)
         return string.format("%%%02X", string.byte(c))
-    end    
+    end 
     
-    -- Loop over the playerlist & return a boolean if the player is connected
-    Tip4serv.checkifPlayerIsLoaded = function ( infos)
-        if infos["steamid"] ~= "" then
-            local targetPlayer = player.GetBySteamID64(infos["steamid"])
-            if(targetPlayer and targetPlayer:IsFullyAuthenticated()) then 
-                return targetPlayer
+    --Returns every steam id that are currently waiting for their purchases
+    Tip4serv.getCustomers = function ( data )
+        local customers = {} --hashmap of customers where false mean disconnected 
+        for k,infos in ipairs(data) do 
+            customers[infos["steamid"]] = false  --initiate them all to false
+        end
+        return customers
+    end
+
+    -- Set all the connected flags to the customers who are currently waiting their delivery
+    Tip4serv.checkifPlayerIsLoaded = function(customers) 
+        for i,connectedPlayer in ipairs(player.getAll()) do
+            if rawget(customers,connectedPlayer:OwnerSteamID64()) ~= nil then -- We use rawget for optimisation purposes
+                customers[connectedPlayer:OwnerSteamID64()] = connectedPlayer --We set the player for connected
             end
-        end    
-        return false
+        end
+        return customers
     end
-    
-    -- Base64 encoding algorithm
-    Tip4serv.base64_encode = function ( data )
-        local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-        return ((data:gsub('.', function(x) 
-            local r,b='',x:byte()
-            for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
-            return r;
-        end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
-            if (#x < 6) then return '' end
-            local c=0
-            for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
-            return b:sub(c+1,c+1)
-        end)..({ '', '==', '=' })[#data%3+1])
-    end
-    
     -- Decrypt the secret key
     Tip4serv.calculateHMAC = function (server_id, public_key, private_key, timestamp)
         local datas = server_id..public_key..timestamp
-        return Tip4serv.base64_encode(sha256.hmac_sha256(private_key, datas))
+        return util.Base64Encode(sha256.hmac_sha256(private_key, datas))
     end
     
     -- URL Encoding algorithm for sending transaction data
@@ -168,23 +165,9 @@ if not Tip4serv then
     -- Execute commands on the server
     Tip4serv.exe_command = function(cmd)        
         MsgC(Color(0,255,0),"[Tip4serv] execute command: "..cmd.."\n")
-        argv_gmod =  Tip4serv.split(cmd," ")
+        argv_gmod =   cmd.split(" ")
         main_cmd = argv_gmod[0]
         argv_gmod[0] =nil
         RunConsoleCommand(main_cmd,unpack(argv_gmod))
-    end
-    
-    -- Split the differents commands to execute
-    Tip4serv.split =  function(inputstr, sep)
-        if sep == nil then
-            sep = "%s"
-        end
-        local t={}
-        i = 0
-        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-            t[i] = str
-            i= i+1
-        end
-        return t
     end
 end
