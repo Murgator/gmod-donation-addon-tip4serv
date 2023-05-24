@@ -51,7 +51,7 @@ Open an account on [Tip4serv.com](https://tip4serv.com/?ads=github), follow the 
 
 ***Make sure that there is at least 1 player connected on your server when you test a purchase on tip4serv, otherwise commands will not be processed.***
 
-Here are some commands example you can use in the products configuration: [MY PRODUCTS](https://tip4serv.com/dashboard/my-products) but you can use all console commands from your addons.
+Here are some commands example you can use in the products configuration: [MY PRODUCTS](https://tip4serv.com/dashboard/my-products) but you can use all the console commands of the addons that you have installed on your server.
 
 Add a player to a group (ULX):
 
