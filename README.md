@@ -47,7 +47,7 @@ Open an account on [Tip4serv.com](https://tip4serv.com/?ads=github), follow the 
 
 ## Setting up commands on Tip4Serv
 
-***Before setting up your commands on Tip4serv.com, you should know that command work in your server's console (not ingame as an admin).***
+***Before setting up your commands on Tip4serv.com, you should know the commands you configure will be executed in your server's console (not ingame as an admin).***
 
 ***Make sure that there is at least 1 player connected on your server when you test a purchase on tip4serv, otherwise commands will not be processed.***
 
