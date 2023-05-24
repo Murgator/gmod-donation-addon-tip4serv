@@ -73,6 +73,18 @@ Give money to a player (DarkRP):
 
 `darkrp addmoney {gmod_username} amount`
 
+[View all ULX commands](https://ulyssesmod.net/ulx_docs/ulx-commands)
+
+## Custom ULX addon
+
+Required: [Custom ULX addon](https://steamcommunity.com/sharedfiles/filedetails/?id=718665054)
+
+Example to give Alyx's gun to a player:
+
+`ulx give {gmod_username} weapon_alyxgun`
+
+[Consult the list of entities](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
+
 ## Need help?
 
 [Documentation](https://docs.tip4serv.com)
