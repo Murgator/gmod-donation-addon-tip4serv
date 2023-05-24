@@ -56,7 +56,7 @@ Here are some commands example you can use in the products configuration: [MY PR
 You can use all the console commands of the addons that you have installed on your server.
 
 
-Add a player to a group (ULX):
+***Add a player to a group (ULX):***
 
 `ulx adduser {gmod_username} group-name`
 
@@ -64,7 +64,7 @@ or
 
 `ulx adduserid {steam_id} group-name`
 
-Remove a player from a group (ULX):
+***Remove a player from a group (ULX):***
 
 `ulx removeuser {gmod_username} group-name`
 
@@ -72,7 +72,7 @@ or
 
 `ulx removeuserid {steam_id} group-name`
 
-Give money to a player (DarkRP):
+***Give money to a player (DarkRP):***
 
 `darkrp addmoney {gmod_username} amount`
 
@@ -82,7 +82,7 @@ Give money to a player (DarkRP):
 
 Required: [Custom ULX addon](https://steamcommunity.com/sharedfiles/filedetails/?id=718665054)
 
-Example to give Alyx's gun to a player:
+***Example to give Alyx's gun to a player:***
 
 `ulx give {gmod_username} weapon_alyxgun`
 
