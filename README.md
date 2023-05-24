@@ -86,7 +86,7 @@ Required: [Custom ULX addon](https://steamcommunity.com/sharedfiles/filedetails/
 
 `ulx give {gmod_username} weapon_alyxgun`
 
-[View all entities](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
+[View all entities you can give](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
 
 ## Need help?
 
