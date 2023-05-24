@@ -83,7 +83,7 @@ Example to give Alyx's gun to a player:
 
 `ulx give {gmod_username} weapon_alyxgun`
 
-[Consult the list of entities](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
+[View all entities](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
 
 ## Need help?
 
