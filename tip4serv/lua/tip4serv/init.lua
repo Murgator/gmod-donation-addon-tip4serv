@@ -1,5 +1,5 @@
 include("tip4serv/tip4serv.lua")
-
+include ("tip4serv/tip4extended.lua")
 -- Checks if a purchase has been made every x minutes
 local function Tip4serv_checkPayment_every_x_min()
     local key_arr = Tip4serv.check_api_key_validity()
@@ -28,10 +28,10 @@ concommand.Add("tip4serv",function(ply,cmd,args)
         Tip4serv.Config.CreateConfig()
         Tip4serv.Config.Load()
         MsgC(Tip4serv.Colors.green,"Connecting to Tip4Serv...\n")
-        local key_arr = Tip4servcheck_api_key_validity()
+        local key_arr = Tip4serv.check_api_key_validity()
         if key_arr == false then return end
         Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),false)
-    else 
-        MsgC(Tip4serv.Colors.red,"Invalid Tip4serv command, correct use: tip4serv connect\n")
+    else  --Tip4extended
+        Tip4extended.runTip4serv(args)
     end
 end)
