@@ -10,7 +10,7 @@ if not Tip4serv then
     Tip4serv.response_path = "tip4serv/response.json"
     Tip4serv.Config = {}
     Tip4serv.Colors = {}
-    
+    Tip4serv.MessageCache = {}
     --Color Caching
     Tip4serv.Colors.red = Color(255,0,0)
     Tip4serv.Colors.green = Color(0,255,0)
@@ -52,7 +52,7 @@ if not Tip4serv then
         end 
 
         --handle order received message if it is bigger than 255 bytes
-        if string.len(Tip4serv.Config.data.order_received_text) > 255 then
+        if string.len(Tip4serv.Config.data.order_received_text) > 230 then
             Tip4serv.Config.data.order_received_text = string.sub(Tip4serv.Config.data.order_received_text,1,230)
             MsgC(Tip4serv.Colors.red,"Order Received text is too long please make a shorter message\n")
         end
@@ -159,10 +159,10 @@ if not Tip4serv then
     end
     --Sends the thank you message to player
     Tip4serv.send_chat_message = function(msg,ply)
-        util.AddNetworkString("PaymentMessage")
-        net.Start("PaymentMessage")
-        net.WriteString(msg)
-        net.Send(ply)
+        if rawget(Tip4serv.MessageCache,ply:SteamID64()) == nil then 
+            ply:ChatPrint(Tip4serv.Config.data.order_received_text) --Message is already limited to 230 characters so no overflow can happen
+            Tip4serv.MessageCache[ply:SteamID64()] = true --player won't receive any message anymore...
+        end
     end
     -- Characters to hexadecimal (used for URL ENCODING)
     Tip4serv.char_to_hex = function(c)
