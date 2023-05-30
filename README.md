@@ -75,8 +75,6 @@ You can use all the console commands of the addons that you have installed on yo
 
 ## SAM commands
 
-Required: [SAM](https://www.gmodstore.com/market/view/sam)
-
 ***Add a player to a rank:***
 
 `sam setrankid {steam_id} VIP`
@@ -86,8 +84,6 @@ Required: [SAM](https://www.gmodstore.com/market/view/sam)
 `sam setrankid {steam_id} user`
 
 ## sAdmin commands
-
-Required: [sAdmin](https://www.gmodstore.com/market/view/sadmin-the-best-admin-mod)
 
 ***Add a player to a group:***
 
