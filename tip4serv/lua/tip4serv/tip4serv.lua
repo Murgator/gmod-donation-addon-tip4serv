@@ -11,6 +11,7 @@ if not Tip4serv then
     Tip4serv.Config = {}
     Tip4serv.Colors = {}
     Tip4serv.MessageCache = {}
+    Tip4serv.enabled = true 
     --Color Caching
     Tip4serv.Colors.red = Color(255,0,0)
     Tip4serv.Colors.green = Color(0,255,0)
@@ -30,7 +31,15 @@ if not Tip4serv then
             file.Write("tip4serv/config.json",util.TableToJSON(Tip4serv.Config.data,true)) --We do not need any callback since the addon is ready to work without config file
         end
     end
-    
+    Tip4serv.to_number = function(text) 
+        local n = 0
+        local len = #text 
+        for i =1 , len do 
+            local charByte = string.byte(text,i,i)
+            local digit = 
+        end
+        return n
+    end 
     -- Load config files for tip4serv
     Tip4serv.Config.Load =  function()
         local data = file.Read("tip4serv/config.json","DATA")
@@ -40,15 +49,17 @@ if not Tip4serv then
         --type verification 
         if(type(Tip4serv.Config.data.key)~="string") then 
             MsgC(Tip4serv.Colors.red,"Config.Key should be a string\n")
-            Tip4serv.Config.data.key="YOUR_API_KEY"
+            Tip4serv.enabled = false
         end 
         if(type(Tip4serv.Config.data.request_interval_in_minutes)~="number") then
             MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
-            Tip4serv.Config.data.request_interval_in_minutes = 2
+            Tip4serv.enabled = false
         end
         if(type(Tip4serv.Config.data.order_received_text)~="string") then 
-            MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
-            Tip4serv.Config.data.order_received_text="Thank you for your purchase :)"
+            if tonumber(Tip4serv.Config.data.order_received_text) == nil then 
+                MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
+                Tip4serv.enabled = false
+            end
         end 
 
         --handle order received message if it is bigger than 255 bytes
@@ -62,6 +73,7 @@ if not Tip4serv then
     
     -- Retrieve transactions, handle transactions & send transaction status
     Tip4serv.check_pending_commands = function (server_id,public_key,private_key,timestamp,get_cmd)
+        if Tip4serv.enabled == false then return end
         -- MAC calculation      
         local MAC = Tip4serv.calculateHMAC(server_id, private_key, public_key, timestamp)
         -- Get last infos json file
