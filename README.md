@@ -67,7 +67,7 @@ You can use all the console commands of the addons that you have installed on yo
 
 [View all ULX commands](https://ulyssesmod.net/ulx_docs/ulx-commands)
 
-## DARKRP commands
+## DarkRP commands
 
 ***Give money to a player (DarkRP):***
 
