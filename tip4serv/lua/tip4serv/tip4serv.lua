@@ -31,15 +31,6 @@ if not Tip4serv then
             file.Write("tip4serv/config.json",util.TableToJSON(Tip4serv.Config.data,true)) --We do not need any callback since the addon is ready to work without config file
         end
     end
-    Tip4serv.to_number = function(text) 
-        local n = 0
-        local len = #text 
-        for i =1 , len do 
-            local charByte = string.byte(text,i,i)
-            local digit = 
-        end
-        return n
-    end 
     -- Load config files for tip4serv
     Tip4serv.Config.Load =  function()
         local data = file.Read("tip4serv/config.json","DATA")
