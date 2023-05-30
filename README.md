@@ -69,7 +69,7 @@ You can use all the console commands of the addons that you have installed on yo
 
 ## DarkRP commands
 
-***Give money to a player (DarkRP):***
+***Give money to a player:***
 
 `darkrp addmoney {gmod_username} amount`
 
