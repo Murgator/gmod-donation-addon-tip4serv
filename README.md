@@ -55,22 +55,25 @@ Here are some commands example you can use in the products configuration: [MY PR
 
 You can use all the console commands of the addons that you have installed on your server.
 
+## ULX commands
 
-***Add a player to a group (ULX):***
+***Add a player to a group:***
 
 `ulx adduserid {steam_id} group-name`
 
-***Remove a player from a group (ULX):***
+***Remove a player from a group:***
 
 `ulx removeuserid {steam_id} group-name`
+
+[View all ULX commands](https://ulyssesmod.net/ulx_docs/ulx-commands)
+
+## DARKRP commands
 
 ***Give money to a player (DarkRP):***
 
 `darkrp addmoney {gmod_username} amount`
 
-[View all ULX commands](https://ulyssesmod.net/ulx_docs/ulx-commands)
-
-## SAM Admin mod
+## SAM commands
 
 Required: [SAM](https://www.gmodstore.com/market/view/sam)
 
@@ -82,7 +85,7 @@ Required: [SAM](https://www.gmodstore.com/market/view/sam)
 
 `sam setrankid {steam_id} user`
 
-## sAdmin
+## sAdmin commands
 
 Required: [sAdmin](https://www.gmodstore.com/market/view/sadmin-the-best-admin-mod)
 
