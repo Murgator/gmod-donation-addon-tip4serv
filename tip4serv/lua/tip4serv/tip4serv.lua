@@ -93,7 +93,7 @@ if not Tip4serv then
             end                
             -- Tip4serv connect
             if (get_cmd == false) then
-                MsgC(Tip4serv.Colors.green,tip4serv_response) return
+                MsgC(Tip4serv.Colors.green,tip4serv_response.."\n") return
             end    
             -- Check for error
             local json_decoded = util.JSONToTable(tip4serv_response)        
@@ -102,7 +102,7 @@ if not Tip4serv then
                     file.Delete(Tip4serv.response_path)
                     return                
                 elseif string.match(tip4serv_response, "Tip4serv") then
-                    MsgC(Tip4serv.Colors.green,tip4serv_response) 
+                    MsgC(Tip4serv.Colors.green,tip4serv_response.."\n") 
                     return
                 end    
             end
@@ -155,7 +155,7 @@ if not Tip4serv then
         local i = 0
         for info in string.gmatch(Tip4serv.Config.data.key, '([^.]+)') do key_arr[i] = info i = i+1 end
         if (i ~= 3) then
-            MsgC(Tip4serv.Colors.red,missing_key)
+            MsgC(Tip4serv.Colors.red,missing_key.."\n")
             return false
         end  
         return key_arr
