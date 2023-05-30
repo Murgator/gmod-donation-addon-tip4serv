@@ -58,17 +58,9 @@ You can use all the console commands of the addons that you have installed on yo
 
 ***Add a player to a group (ULX):***
 
-`ulx adduser {gmod_username} group-name`
-
-or
-
 `ulx adduserid {steam_id} group-name`
 
 ***Remove a player from a group (ULX):***
-
-`ulx removeuser {gmod_username} group-name`
-
-or
 
 `ulx removeuserid {steam_id} group-name`
 
@@ -78,6 +70,38 @@ or
 
 [View all ULX commands](https://ulyssesmod.net/ulx_docs/ulx-commands)
 
+## SAM Admin mod
+
+Required: [SAM](https://www.gmodstore.com/market/view/sam)
+
+***Add a player to a rank:***
+
+`sam setrankid {steam_id} VIP`
+
+***Remove a player from a rank:***
+
+`sam setrankid {steam_id} user`
+
+## sAdmin
+
+Required: [sAdmin](https://www.gmodstore.com/market/view/sadmin-the-best-admin-mod)
+
+***Add a player to a group:***
+
+`sa Setrankid {steam_id} group-name`
+
+***Remove a player from a group:***
+
+`sa Removeuser {steam_id} group-name`
+
+***Give ammo to a player:***
+
+`sa Giveammo {steam_id} ammo-name amount`
+
+***Give entity to a player:***
+
+`sa Give {steam_id} entity-name`
+
 ## Custom ULX addon
 
 Required: [Custom ULX addon](https://steamcommunity.com/sharedfiles/filedetails/?id=718665054)
@@ -86,7 +110,21 @@ Required: [Custom ULX addon](https://steamcommunity.com/sharedfiles/filedetails/
 
 `ulx give {gmod_username} weapon_alyxgun`
 
+## Entity name
+
 [View all entities you can give](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
+
+## Quantity multiplier
+
+You can also multiply the quantity choosen by the customer like this: `{quantity*50}`
+
+Note: You must first activate the **Allow quantity choice** option in your product.
+
+Use this command on Tip4serv if you want to sell bundles of $200 with darkrp plugin:
+`darkrp addmoney {gmod_username} {quantity*200}`
+
+This will run in your server console after a purchase if the player buys product 4 times:
+`darkrp addmoney Murgator 800`
 
 ## Need help?
 
