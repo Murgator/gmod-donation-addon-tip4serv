@@ -21,22 +21,22 @@ if not Tip4extended then
         elseif argv[1] == "addmoneyid" then 
             Tip4extended.addmoneyid(argv)
         else 
-            MsgC(Tip4extended.Colors.red,"tip4serv: Not enough arguments! Command available: giveid, jobid or addmoneyid\n")
+            MsgC(Tip4extended.Colors.red,"tip4serv: Unknown command!\n")
         end
     end
     Tip4extended.addmoneyid = function(argv) 
         --tip4serv addmoneyid <Player> <amount>
-        if DarkRP == nil then 
-            MsgC(Tip4extended.Colors.red,"tip4serv addmoneyid: DarkRP is not installed!\n")
-            return
-        end
         if #argv < 3 then 
             MsgC(Tip4extended.Colors.red,"tip4serv jobid: Not enough arguments!\n")
             return
         end
         local player = Tip4extended.findPlayer(argv[2])
         if player == nil then 
-            MsgC(Tip4extended.Colors.red,"tip4serv addmoneyid: Player is disconnected!\n")
+            MsgC(Tip4extended.Colors.red,"tip4serv addmoneyid: player is disconnected!\n")
+            return
+        end
+        if DarkRP == nil then 
+            MsgC(Tip4extended.Colors.red,"tip4serv addmoneyid: DarkRP is not installed!\n")
             return
         end
        Tip4extended.addmoney(player,argv[3])
@@ -44,17 +44,17 @@ if not Tip4extended then
     
     Tip4extended.jobid = function(argv) 
         --tip4serv jobid <Player> <Job>
-        if DarkRP == nil then 
-            MsgC(Tip4extended.Colors.red,"tip4serv jobid: DarkRP is not installed!\n")
-            return
-        end
         if #argv < 3 then 
             MsgC(Tip4extended.Colors.red,"tip4serv jobid: Not enough arguments!\n")
             return
         end
-        local player = Tip4extended.findPlayer(argv[2])
+        local player  =Tip4extended.findPlayer(argv[2])
         if player == nil then 
-            MsgC(Tip4extended.Colors.red,"tip4serv jobid: Player is disconnected!\n")
+            MsgC(Tip4extended.Colors.red,"tip4serv jobid: player is disconnected!\n")
+            return
+        end
+        if DarkRP == nil then 
+            MsgC(Tip4extended.Colors.red,"tip4serv jobid: DarkRP is not installed!\n")
             return
         end
        Tip4extended.ChangeJob(player,argv[3])
@@ -67,7 +67,7 @@ if not Tip4extended then
         end
         local player = Tip4extended.findPlayer(argv[2])
         if(player == nil) then
-            MsgC(Tip4extended.Colors.red,"tip4serv giveid: Player is disconnected!\n")
+            MsgC(Tip4extended.Colors.red,"tip4serv giveid: Player is not online!\n")
             return
         end
         if (not player:Alive()) then 
@@ -123,10 +123,18 @@ if not Tip4extended then
     end
     -- Find player object with steam id
     Tip4extended.findPlayer = function(steam_id)
-        for i,connectedPlayer in ipairs(player.GetAll()) do 
-            if connectedPlayer:SteamID64() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer() then
+        if string.find(steam_id,"STEAM_") == nil then
+	      for i,connectedPlayer in ipairs(player.GetAll()) do 
+	         if connectedPlayer:SteamID64() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer() then
                 return connectedPlayer
-            end
+	         end
+	      end
+        else
+	      for i,connectedPlayer in ipairs(player.GetAll()) do
+	         if connectedPlayer:SteamID() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer()  then
+	    	    return connectedPlayer
+	            end
+	        end
         end
         return nil
     end
