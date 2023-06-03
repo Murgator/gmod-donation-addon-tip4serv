@@ -38,21 +38,20 @@ if not Tip4serv then
         Tip4serv.Config.data = util.JSONToTable(data)
 
         --type verification 
-        if(type(Tip4serv.Config.data.key)~="string") then 
+        if type(Tip4serv.Config.data.key)~="string" then 
             MsgC(Tip4serv.Colors.red,"Config.Key should be a string\n")
             Tip4serv.enabled = false
         end 
         if(type(Tip4serv.Config.data.request_interval_in_minutes)~="number") then
-            MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
-            Tip4serv.enabled = false
+	   if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then
+	      MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
+	      Tip4serv.enabled = false
+	   end
         end
-        if(type(Tip4serv.Config.data.order_received_text)~="string") then 
-            if tonumber(Tip4serv.Config.data.order_received_text) == nil then 
-                MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
-                Tip4serv.enabled = false
-            end
+        if(type(Tip4serv.Config.data.order_received_text)~="string") then
+	   MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
+	   Tip4serv.enabled = false
         end 
-
         --handle order received message if it is bigger than 255 bytes
         if string.len(Tip4serv.Config.data.order_received_text) > 230 then
             Tip4serv.Config.data.order_received_text = string.sub(Tip4serv.Config.data.order_received_text,1,230)
@@ -64,7 +63,6 @@ if not Tip4serv then
     
     -- Retrieve transactions, handle transactions & send transaction status
     Tip4serv.check_pending_commands = function (server_id,public_key,private_key,timestamp,get_cmd)
-        if Tip4serv.enabled == false then return end
         -- MAC calculation      
         local MAC = Tip4serv.calculateHMAC(server_id, private_key, public_key, timestamp)
         -- Get last infos json file
