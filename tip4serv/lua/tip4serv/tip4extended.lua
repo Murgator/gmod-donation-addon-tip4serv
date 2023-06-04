@@ -14,26 +14,26 @@ if not Tip4extended then
 
     --Fix arguments for STEAMID
     Tip4extended.fixArgv = function(argv)
-       if string.find(argv[2],"\"") == nil and string.find(argv[2],"STEAM_") ~= nil then	  
-	  -- unite the steam id in one single string
-	  if #argv >= 6 then
-	     steam_id = table.concat(argv,"",2,6)
-	     res = {}
-	     table.insert(res,argv[1])
-	     table.insert(res,steam_id)
-	     for i=7,#argv do
-		table.insert(res,argv[i])
-	     end
-	     return res
-	  end
-       end
-       return argv
+        if string.find(argv[2],"\"") == nil and string.find(argv[2],"STEAM_") ~= nil then	  
+	        -- unite the steam id in one single string
+	        if #argv >= 6 then
+	            steam_id = table.concat(argv,"",2,6)
+	            res = {}
+	            table.insert(res,argv[1])
+	            table.insert(res,steam_id)
+	            for i=7,#argv do
+		            table.insert(res,argv[i])
+	            end
+	            return res
+	        end
+        end
+        return argv
     end
     --Entry point for every commands
     Tip4extended.runTip4serv = function(argv)
-       if #argv >= 2 then
-	  argv = Tip4extended.fixArgv(argv)
-       end
+        if #argv >= 2 then
+	        argv = Tip4extended.fixArgv(argv)
+        end
         if argv[1] == "giveid" then
             Tip4extended.giveid(argv)
         elseif argv[1] == "jobid" then 
@@ -50,7 +50,7 @@ if not Tip4extended then
             MsgC(Tip4extended.Colors.red,"tip4serv addmoneyid: DarkRP is not installed!\n")
             return
         end
-       if #argv < 3 then 
+        if #argv < 3 then 
             MsgC(Tip4extended.Colors.red,"tip4serv jobid: Not enough arguments!\n")
             return
         end
@@ -68,7 +68,7 @@ if not Tip4extended then
             MsgC(Tip4extended.Colors.red,"tip4serv jobid: DarkRP is not installed!\n")
             return
         end
-       if #argv < 3 then 
+        if #argv < 3 then 
             MsgC(Tip4extended.Colors.red,"tip4serv jobid: Not enough arguments!\n")
             return
         end

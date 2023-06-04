@@ -43,14 +43,14 @@ if not Tip4serv then
             Tip4serv.enabled = false
         end 
         if(type(Tip4serv.Config.data.request_interval_in_minutes)~="number") then
-	   if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then
-	      MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
-	      Tip4serv.enabled = false
-	   end
+	        if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then
+	            MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
+	            Tip4serv.enabled = false
+	        end
         end
         if(type(Tip4serv.Config.data.order_received_text)~="string") then
-	   MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
-	   Tip4serv.enabled = false
+	        MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
+	        Tip4serv.enabled = false
         end 
         --handle order received message if it is bigger than 255 bytes
         if string.len(Tip4serv.Config.data.order_received_text) > 230 then
@@ -82,7 +82,6 @@ if not Tip4serv then
         local statusUrl = "https://api.tip4serv.com/payments_api_v2.php?id="..server_id.."&time="..timestamp.."&json="..json_encoded.."&get_cmd="..get_cmd_tip4serv
           
         http.Fetch(statusUrl,function(tip4serv_response,size,headers,statusCode)
-    
             if (statusCode ~= 200 or tip4serv_response == nil) then
                 if (get_cmd == false) then
                     MsgC(Tip4serv.Colors.red,"Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
@@ -120,7 +119,6 @@ if not Tip4serv then
                     --Order received text will always be 255 bytes or less because we've substracted it's length at startup
                     Tip4serv.send_chat_message(Tip4serv.Config.data.order_received_text,player_infos)
                 end
-                
                 -- Execute commands for player
                 if type(infos["cmds"]) == "table" then                  
                     for k,cmd in ipairs(infos["cmds"]) do
@@ -218,7 +216,6 @@ if not Tip4serv then
         if url == nil then
             return
         end
-
         url = url:gsub("\n", "\r\n")
         url = url:gsub("([^%w ])", Tip4serv.char_to_hex)
         url = url:gsub(" ", "+")
