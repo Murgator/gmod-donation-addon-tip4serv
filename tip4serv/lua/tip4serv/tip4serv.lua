@@ -4,18 +4,19 @@ include("tip4serv/sha256.lua")
 -- Tip4serv class
 if not Tip4serv then    
     
-    -- CLASS MEMBERS    
-
+    -- CLASS MEMBERS
     Tip4serv = {}
     Tip4serv.response_path = "tip4serv/response.json"
     Tip4serv.Config = {}
     Tip4serv.Colors = {}
     Tip4serv.MessageCache = {}
-    Tip4serv.enabled = true 
-    --Color Caching
+    Tip4serv.enabled = true
+    
+    -- Color Caching
     Tip4serv.Colors.red = Color(255,0,0)
     Tip4serv.Colors.green = Color(0,255,0)
     
+    -- Config file
     Tip4serv.Config.data =  {
         ["key"] = "YOUR_API_KEY",
         ["request_interval_in_minutes"] = 2,
@@ -31,13 +32,13 @@ if not Tip4serv then
             file.Write("tip4serv/config.json",util.TableToJSON(Tip4serv.Config.data,true)) --We do not need any callback since the addon is ready to work without config file
         end
     end
+    
     -- Load config files for tip4serv
     Tip4serv.Config.Load =  function()
         local data = file.Read("tip4serv/config.json","DATA")
         if not data then MsgC(Tip4serv.Colors.red,"Config file not found for Tip4serv\n") return end
         Tip4serv.Config.data = util.JSONToTable(data)
-
-        --type verification 
+        -- Type verification of config file
         if type(Tip4serv.Config.data.key)~="string" then 
             MsgC(Tip4serv.Colors.red,"Config.Key should be a string\n")
             Tip4serv.enabled = false
@@ -51,8 +52,8 @@ if not Tip4serv then
         if(type(Tip4serv.Config.data.order_received_text)~="string") then
             MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
             Tip4serv.enabled = false
-        end 
-        --handle order received message if it is bigger than 255 bytes
+        end        
+        -- Handle order received message if it is bigger than 255 bytes
         if string.len(Tip4serv.Config.data.order_received_text) > 230 then
             Tip4serv.Config.data.order_received_text = string.sub(Tip4serv.Config.data.order_received_text,1,230)
             MsgC(Tip4serv.Colors.red,"Order Received text is too long please make a shorter message\n")
@@ -68,19 +69,17 @@ if not Tip4serv then
         -- Get last infos json file
         local response = File_manager.load_resource_file(Tip4serv.response_path,false)
         local json_encoded = ""
-
         if (string.len(response)>0) then
             json_encoded = Tip4serv.urlencode(response)
         end
-        -- Request Tip4serv
-        
-        --build get_cmd query param
+        -- Build get_cmd query param
         local get_cmd_tip4serv = "no"
         if(get_cmd == true) then
             get_cmd_tip4serv="yes"
         end 
-        local statusUrl = "https://api.tip4serv.com/payments_api_v2.php?id="..server_id.."&time="..timestamp.."&json="..json_encoded.."&get_cmd="..get_cmd_tip4serv
-          
+        
+        -- Request Tip4serv        
+        local statusUrl = "https://api.tip4serv.com/payments_api_v2.php?id="..server_id.."&time="..timestamp.."&json="..json_encoded.."&get_cmd="..get_cmd_tip4serv          
         http.Fetch(statusUrl,function(tip4serv_response,size,headers,statusCode)
             if (statusCode ~= 200 or tip4serv_response == nil) then
                 if (get_cmd == false) then
@@ -107,8 +106,9 @@ if not Tip4serv then
             file.Delete(Tip4serv.response_path)
             -- Loop customers
             local new_json = {}
-            ---build a hash map about the current customers
+            -- Build a hash map about the current customers
             customers = Tip4serv.checkifPlayerIsLoaded(json_decoded);
+            -- Loop all payments
             for k,infos in ipairs(json_decoded) do
                 local new_obj = {} local new_cmds = {}
                 new_obj["date"] = os.date("%c")
@@ -116,7 +116,7 @@ if not Tip4serv then
                 -- Check if player is online and get username
                 local player_infos =  customers[infos["steamid"]]
                 if player_infos  then
-                    --Order received text will always be 255 bytes or less because we've substracted it's length at startup
+                    -- Order received text will always be 255 bytes or less because we've substracted it's length at startup
                     Tip4serv.send_chat_message(Tip4serv.Config.data.order_received_text,player_infos)
                 end
                 -- Execute commands for player
@@ -139,7 +139,7 @@ if not Tip4serv then
                     new_json[infos["id"]] = new_obj
                 end
             end
-            -- Save the new json file
+            -- Save the new json file for API
             file.Write(Tip4serv.response_path,util.TableToJSON(new_json))
         end, function(message) end, { ['Authorization'] = MAC })          
     end    
@@ -156,19 +156,21 @@ if not Tip4serv then
         end  
         return key_arr
     end
-    --Sends the thank you message to player
+    
+    -- Sends the thank you message to player
     Tip4serv.send_chat_message = function(msg,ply)
         if rawget(Tip4serv.MessageCache,ply:SteamID64()) == nil then 
             ply:ChatPrint(Tip4serv.Config.data.order_received_text) --Message is already limited to 230 characters so no overflow can happen
             Tip4serv.MessageCache[ply:SteamID64()] = true --player won't receive any message anymore...
         end
     end
+    
     -- Characters to hexadecimal (used for URL ENCODING)
     Tip4serv.char_to_hex = function(c)
         return string.format("%%%02X", string.byte(c))
     end 
     
-    --Returns every steam id that are currently waiting for their purchases
+    -- Returns every steam id that are currently waiting for their purchases
     Tip4serv.getCustomers = function ( data )
         local customers = {} --hashmap of customers (will store player object)
         for k,infos in ipairs(data) do 
@@ -183,15 +185,16 @@ if not Tip4serv then
         local customers = {} --Hashmap <SteamID64,Player> 
         for i,connectedPlayer in ipairs(player.GetAll()) do
             if rawget(tip4Customers,connectedPlayer:SteamID64()) ~= nil then -- We use rawget for optimisation purposes
-                customers[connectedPlayer:SteamID64()] = connectedPlayer --We set the player for connected
+                customers[connectedPlayer:SteamID64()] = connectedPlayer -- We set the player for connected
             end
         end
         return customers
     end
 
+    -- Custom Base64 encode for tip4serv
     Tip4serv.base64_encode = function ( data )
-        --We are using Tip4serv.base64_encode because it is slightly different than 
-        --utils.Base64 encoding algorithm so the result between this function and ours will be differents
+        -- We are using Tip4serv.base64_encode because it is slightly different than 
+        -- utils.Base64 encoding algorithm so the result between this function and ours will be differents
         local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
         return ((data:gsub('.', function(x) 
             local r,b='',x:byte()
