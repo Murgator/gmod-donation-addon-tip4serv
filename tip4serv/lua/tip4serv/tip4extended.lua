@@ -14,25 +14,25 @@ if not Tip4extended then
 
     --Fix arguments for STEAMID
     Tip4extended.fixArgv = function(argv)
-        if string.find(argv[2],"\"") == nil and string.find(argv[2],"STEAM_") ~= nil then	  
-	        -- unite the steam id in one single string
-	        if #argv >= 6 then
-	            steam_id = table.concat(argv,"",2,6)
-	            res = {}
-	            table.insert(res,argv[1])
-	            table.insert(res,steam_id)
-	            for i=7,#argv do
-		            table.insert(res,argv[i])
-	            end
-	            return res
-	        end
+        if string.find(argv[2],"\"") == nil and string.find(argv[2],"STEAM_") ~= nil then     
+            -- unite the steam id in one single string
+            if #argv >= 6 then
+                steam_id = table.concat(argv,"",2,6)
+                res = {}
+                table.insert(res,argv[1])
+                table.insert(res,steam_id)
+                for i=7,#argv do
+                    table.insert(res,argv[i])
+                end
+                return res
+            end
         end
         return argv
     end
     --Entry point for every commands
     Tip4extended.runTip4serv = function(argv)
         if #argv >= 2 then
-	        argv = Tip4extended.fixArgv(argv)
+            argv = Tip4extended.fixArgv(argv)
         end
         if argv[1] == "giveid" then
             Tip4extended.giveid(argv)
@@ -144,17 +144,17 @@ if not Tip4extended then
     -- Find player object with steam id
     Tip4extended.findPlayer = function(steam_id)
         if string.find(steam_id,"STEAM_") == nil then
-	      for i,connectedPlayer in ipairs(player.GetAll()) do 
-	         if connectedPlayer:SteamID64() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer() then
+          for i,connectedPlayer in ipairs(player.GetAll()) do 
+             if connectedPlayer:SteamID64() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer() then
                 return connectedPlayer
-	         end
-	      end
+             end
+          end
         else
-	      for i,connectedPlayer in ipairs(player.GetAll()) do
-	         if connectedPlayer:SteamID() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer()  then
-	    	    return connectedPlayer
-	            end
-	        end
+          for i,connectedPlayer in ipairs(player.GetAll()) do
+             if connectedPlayer:SteamID() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer()  then
+                return connectedPlayer
+                end
+            end
         end
         return nil
     end

@@ -43,14 +43,14 @@ if not Tip4serv then
             Tip4serv.enabled = false
         end 
         if(type(Tip4serv.Config.data.request_interval_in_minutes)~="number") then
-	        if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then
-	            MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
-	            Tip4serv.enabled = false
-	        end
+            if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then
+                MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
+                Tip4serv.enabled = false
+            end
         end
         if(type(Tip4serv.Config.data.order_received_text)~="string") then
-	        MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
-	        Tip4serv.enabled = false
+            MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
+            Tip4serv.enabled = false
         end 
         --handle order received message if it is bigger than 255 bytes
         if string.len(Tip4serv.Config.data.order_received_text) > 230 then
