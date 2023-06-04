@@ -30,7 +30,7 @@ if Tip4serv.enabled then
             MsgC(Tip4serv.Colors.green,"Connecting to Tip4Serv...\n")
             local key_arr = Tip4serv.check_api_key_validity()
             if key_arr == false then return end
-                Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),false)
+            Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),false)
         else  --Tip4extended
                 Tip4extended.runTip4serv(args)
         end
