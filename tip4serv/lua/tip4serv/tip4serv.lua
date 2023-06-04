@@ -76,8 +76,7 @@ if not Tip4serv then
         local get_cmd_tip4serv = "no"
         if(get_cmd == true) then
             get_cmd_tip4serv="yes"
-        end 
-        
+        end        
         -- Request Tip4serv        
         local statusUrl = "https://api.tip4serv.com/payments_api_v2.php?id="..server_id.."&time="..timestamp.."&json="..json_encoded.."&get_cmd="..get_cmd_tip4serv          
         http.Fetch(statusUrl,function(tip4serv_response,size,headers,statusCode)
