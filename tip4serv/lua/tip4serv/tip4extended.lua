@@ -2,17 +2,17 @@
 -- it mainly focuses for extending ulx & darkrp commands which only accept username
 -- we make them accept steam id now
 
-if not Tip4extended then 
+if not Tip4extended then
 
-    -- Class Members 
+    -- CLASS MEMBERS
 
     Tip4extended  = {}
     Tip4extended.Colors = {}
     Tip4extended.Colors.red = Color(255,0,0)
 
-    --Class Methods 
+    -- CLASS METHODS
 
-    --Fix arguments for STEAMID
+    -- Fix arguments for STEAMID format
     Tip4extended.fixArgv = function(argv)
         if string.find(argv[2],"\"") == nil and string.find(argv[2],"STEAM_") ~= nil then     
             -- unite the steam id in one single string
@@ -29,7 +29,8 @@ if not Tip4extended then
         end
         return argv
     end
-    --Entry point for every commands
+    
+    -- Entry point for every commands
     Tip4extended.runTip4serv = function(argv)
         if #argv >= 2 then
             argv = Tip4extended.fixArgv(argv)
@@ -44,8 +45,10 @@ if not Tip4extended then
             MsgC(Tip4extended.Colors.red,"tip4serv: Not enough arguments! Available commands are : giveid, jobid or addmoneyid\n")
         end
     end
+    
+    -- Add DarkRP money to player
     Tip4extended.addmoneyid = function(argv) 
-        --tip4serv addmoneyid <Player> <amount>
+        -- tip4serv addmoneyid <Player> <amount>
         if DarkRP == nil then 
             MsgC(Tip4extended.Colors.red,"tip4serv addmoneyid: DarkRP is not installed!\n")
             return
@@ -62,8 +65,9 @@ if not Tip4extended then
        Tip4extended.addmoney(player,argv[3])
     end
     
+    -- Edit DarkRP job of a player
     Tip4extended.jobid = function(argv) 
-        --tip4serv jobid <Player> <Job>
+        -- tip4serv jobid <Player> <Job>
         if DarkRP == nil then 
             MsgC(Tip4extended.Colors.red,"tip4serv jobid: DarkRP is not installed!\n")
             return
@@ -79,6 +83,8 @@ if not Tip4extended then
         end
        Tip4extended.ChangeJob(player,argv[3])
     end
+    
+    -- Give entity to a player
     Tip4extended.giveid = function(argv)
         --Tip4serv giveid <player> <item> <quantity=default=1)
         if #argv < 3 then 
@@ -103,13 +109,17 @@ if not Tip4extended then
             Tip4extended.giveItem(player,argv[3],argv[4])
         end
     end
+
+    -- Add money function
     Tip4extended.addmoney = function(player,amount) 
         player:addMoney(amount)
         DarkRP.notify(player,0,4,"You've received "..amount.."$")
     end
+    
+    -- Give item function
     Tip4extended.giveItem = function(player, item,quantity) 
         local itemEntity = ents.Create(item)
-        --test if item is valid
+        -- test if item is valid
         if not IsValid(itemEntity) then
             MsgC(Tip4extended.Colors.red,"Tip4serv give: Invalid item name\n")
             return 
@@ -118,6 +128,7 @@ if not Tip4extended then
             player:Give(item)
         end
     end
+    
     --Taken from DarkRP sv_jobs.lua
     Tip4extended.ChangeJob = function(ply, args)
         if args == "" then
@@ -141,6 +152,7 @@ if not Tip4extended then
         ply:updateJob(job)
         return ""
     end
+    
     -- Find player object with steam id
     Tip4extended.findPlayer = function(steam_id)
         if string.find(steam_id,"STEAM_") == nil then
