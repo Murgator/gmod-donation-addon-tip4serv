@@ -1,4 +1,3 @@
-
 -- File Manager class : handles the I/O for the data files --
 
 if not File_manager then
