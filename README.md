@@ -55,6 +55,18 @@ Here are some commands example you can use in the products configuration: [MY PR
 
 You can use all the console commands of the addons that you have installed on your server.
 
+## Give commands
+
+***Give entity to a player:***
+
+`tip4serv giveid {steam_id} entity-name`
+
+***Give ammo entity to a player:***
+
+`tip4serv giveid {steam_id} ammo-name quantity`
+
+[View all entities you can give](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
+
 ## ULX commands
 
 ***Add a player to a group:***
@@ -71,7 +83,11 @@ You can use all the console commands of the addons that you have installed on yo
 
 ***Give money to a player:***
 
-`darkrp addmoney {gmod_username} amount`
+`tip4serv addmoneyid {steam_id} amount`
+
+***Change player job:***
+
+`tip4serv jobid {steam_id} job-name`
 
 ## SAM commands
 
@@ -101,18 +117,6 @@ You can use all the console commands of the addons that you have installed on yo
 
 `sa Give {steam_id} entity-name`
 
-## Custom ULX addon
-
-Required: [Custom ULX addon](https://steamcommunity.com/sharedfiles/filedetails/?id=718665054)
-
-***Example to give Alyx's gun to a player:***
-
-`ulx give {gmod_username} weapon_alyxgun`
-
-## Entity name
-
-[View all entities you can give](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
-
 ## Quantity multiplier
 
 You can also multiply the quantity choosen by the customer like this: `{quantity*50}`
@@ -120,10 +124,10 @@ You can also multiply the quantity choosen by the customer like this: `{quantity
 Note: You must first activate the **Allow quantity choice** option in your product.
 
 Use this command on Tip4serv if you want to sell bundles of $200 with darkrp plugin:
-`darkrp addmoney {gmod_username} {quantity*200}`
+`tip4serv addmoneyid {steam_id} {quantity*200}`
 
 This will run in your server console after a purchase if the player buys product 4 times:
-`darkrp addmoney Murgator 800`
+`tip4serv addmoneyid STEAM_0:1:35148628 800`
 
 ## Need help?
 
