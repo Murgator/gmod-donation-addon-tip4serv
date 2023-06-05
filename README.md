@@ -124,9 +124,11 @@ You can also multiply the quantity choosen by the customer like this: `{quantity
 Note: You must first activate the **Allow quantity choice** option in your product.
 
 Use this command on Tip4serv if you want to sell bundles of $200 with darkrp plugin:
+
 `tip4serv addmoneyid {steam_id} {quantity*200}`
 
 This will run in your server console after a purchase if the player buys product 4 times:
+
 `tip4serv addmoneyid STEAM_0:1:35148628 800`
 
 ## Need help?
