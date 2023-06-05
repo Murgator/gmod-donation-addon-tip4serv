@@ -55,7 +55,7 @@ Here are some commands example you can use in the products configuration: [MY PR
 
 You can use all the console commands of the addons that you have installed on your server.
 
-## Give commands
+## Give commands & broadcast
 
 ***Give entity to a player:***
 
@@ -64,6 +64,10 @@ You can use all the console commands of the addons that you have installed on yo
 ***Give ammo entity to a player:***
 
 `tip4serv giveid {steam_id} ammo-name quantity`
+
+***Send message to all players:***
+
+`tip4serv say Thank you {gmod_username} for your {total_paid} {currency} donation`
 
 [View all entities you can give](https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index30df.html)
 
