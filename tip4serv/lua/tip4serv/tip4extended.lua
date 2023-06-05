@@ -41,11 +41,33 @@ if not Tip4extended then
             Tip4extended.jobid(argv)
         elseif argv[1] == "addmoneyid" then 
             Tip4extended.addmoneyid(argv)
+        elseif argv[1] == "say" then 
+            Tip4extended.say(argv)
         else 
-            MsgC(Tip4extended.Colors.red,"tip4serv: Not enough arguments! Available commands are : giveid, jobid or addmoneyid\n")
+            MsgC(Tip4extended.Colors.red,"tip4serv: Not enough arguments! Available commands are : giveid, jobid, addmoneyid or say\n")
         end
     end
-    
+    Tip4extended.say = function(argv) 
+        if #argv < 2 then 
+            MsgC(Tip4extended.Colors.red,"tip4serv: Not enough arguments")
+            return 
+        end
+        local msg = ""
+        for i=2,#argv do 
+            if argv[i] ~= "'" and argv[i] ~= "\"" and argv[i] ~= ":" then
+                msg = msg..argv[i].." "
+            else 
+                msg = string.sub(msg,1,-2) -- remove last space
+                msg = msg..argv[i]
+            end
+        end
+        Tip4extended.SendChatMessageToAllPlayers(msg)
+    end
+    Tip4extended.SendChatMessageToAllPlayers = function(msg) 
+        for _, ply in ipairs(player.GetAll()) do 
+            ply:PrintMessage(HUD_PRINTTALK,msg)    
+        end 
+    end
     -- Add DarkRP money to player
     Tip4extended.addmoneyid = function(argv) 
         -- tip4serv addmoneyid <Player> <amount>
