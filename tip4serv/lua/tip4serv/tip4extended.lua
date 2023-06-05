@@ -156,15 +156,15 @@ if not Tip4extended then
     -- Find player object with steam id
     Tip4extended.findPlayer = function(steam_id)
         if string.find(steam_id,"STEAM_") == nil then
-          for i,connectedPlayer in ipairs(player.GetAll()) do 
-             if connectedPlayer:SteamID64() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer() then
-                return connectedPlayer
-             end
-          end
+            for i,connectedPlayer in ipairs(player.GetAll()) do 
+                if connectedPlayer:SteamID64() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer() then
+                    return connectedPlayer
+                end
+            end
         else
-          for i,connectedPlayer in ipairs(player.GetAll()) do
-             if connectedPlayer:SteamID() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer()  then
-                return connectedPlayer
+            for i,connectedPlayer in ipairs(player.GetAll()) do
+                if connectedPlayer:SteamID() == steam_id and  IsValid(connectedPlayer) and connectedPlayer:IsPlayer()  then
+                    return connectedPlayer
                 end
             end
         end
