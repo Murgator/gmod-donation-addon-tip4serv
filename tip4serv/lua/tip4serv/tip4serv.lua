@@ -6,6 +6,7 @@ if not Tip4serv then
     
     -- CLASS MEMBERS
     Tip4serv = {}
+    Tip4serv.prefix_msgc = "[Tip4serv]"
     Tip4serv.response_path = "tip4serv/response.json"
     Tip4serv.Config = {}
     Tip4serv.Colors = {}
@@ -15,9 +16,6 @@ if not Tip4serv then
     -- Color Caching
     Tip4serv.Colors.red = Color(255,0,0)
     Tip4serv.Colors.green = Color(0,255,0)
-
-    -- Tip4serv prefix
-    Tip4serv.Prefix.msgc = "[Tip4serv]"
     
     -- Config file
     Tip4serv.Config.data =  {
@@ -39,27 +37,27 @@ if not Tip4serv then
     -- Load config files for tip4serv
     Tip4serv.Config.Load =  function()
         local data = file.Read("tip4serv/config.json","DATA")
-        if not data then MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config file not found for Tip4serv\n") return end
+        if not data then MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Config file not found for Tip4serv\n") return end
         Tip4serv.Config.data = util.JSONToTable(data)
         -- Type verification of config file
         if type(Tip4serv.Config.data.key)~="string" then 
-            MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config.Key should be a string\n")
+            MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Config.Key should be a string\n")
             Tip4serv.enabled = false
         end
         if(type(Tip4serv.Config.data.request_interval_in_minutes)~="number") then
             if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then -- Allow string (for compatibility with the old config file)
-                MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config.request_interval_in_minutes should be a number\n")
+                MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Config.request_interval_in_minutes should be a number\n")
                 Tip4serv.enabled = false
             end
         end
         if(type(Tip4serv.Config.data.order_received_text)~="string") then
-            MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config.order_received_text should be a string\n")
+            MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Config.order_received_text should be a string\n")
             Tip4serv.enabled = false
         end        
         -- Handle order received message if it is bigger than 255 bytes
         if string.len(Tip4serv.Config.data.order_received_text) > 230 then
             Tip4serv.Config.data.order_received_text = string.sub(Tip4serv.Config.data.order_received_text,1,230)
-            MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Order Received text is too long please make a shorter message\n")
+            MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Order Received text is too long please make a shorter message\n")
         end
     end
 
@@ -85,7 +83,7 @@ if not Tip4serv then
         http.Fetch(statusUrl,function(tip4serv_response,size,headers,statusCode)
             if (statusCode ~= 200 or tip4serv_response == nil) then
                 if (get_cmd == false) then
-                    MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
+                    MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
                 end
                 return
             end                
@@ -148,7 +146,7 @@ if not Tip4serv then
     
     -- Verify if the secret key is valid
     Tip4serv.check_api_key_validity = function() 
-        local missing_key = Tip4serv.Prefix.msgc.." Set KEY to a valid API key in data/tip4serv/config.json then type: tip4serv connect (Find your key here: https://tip4serv.com/dashboard/my-servers)"
+        local missing_key = Tip4serv.prefix_msgc.." Set KEY to a valid API key in data/tip4serv/config.json then type: tip4serv connect (Find your key here: https://tip4serv.com/dashboard/my-servers)"
         local key_arr = {}
         local i = 0
         for info in string.gmatch(Tip4serv.Config.data.key, '([^.]+)') do key_arr[i] = info i = i+1 end
@@ -229,7 +227,7 @@ if not Tip4serv then
     
     -- Execute commands on the server
     Tip4serv.exe_command = function(cmd)        
-        MsgC(Tip4serv.Colors.green,Tip4serv.Prefix.msgc.." execute command: "..cmd.."\n")
+        MsgC(Tip4serv.Colors.green,Tip4serv.prefix_msgc.." execute command: "..cmd.."\n")
         local argv_gmod = string.Split(cmd," ")
         local main_cmd = argv_gmod[1] -- Index starts at 1
         table.remove(argv_gmod,1)
