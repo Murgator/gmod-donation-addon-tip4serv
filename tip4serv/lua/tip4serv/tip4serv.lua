@@ -15,11 +15,14 @@ if not Tip4serv then
     -- Color Caching
     Tip4serv.Colors.red = Color(255,0,0)
     Tip4serv.Colors.green = Color(0,255,0)
+
+    -- Tip4serv prefix
+    Tip4serv.Prefix.msgc = "[Tip4serv]"
     
     -- Config file
     Tip4serv.Config.data =  {
         ["key"] = "YOUR_API_KEY",
-        ["request_interval_in_minutes"] = 2,
+        ["request_interval_in_minutes"] = 1,
         ["order_received_text"] = "Thank you for your purchase :)"
     }
     
@@ -36,27 +39,27 @@ if not Tip4serv then
     -- Load config files for tip4serv
     Tip4serv.Config.Load =  function()
         local data = file.Read("tip4serv/config.json","DATA")
-        if not data then MsgC(Tip4serv.Colors.red,"Config file not found for Tip4serv\n") return end
+        if not data then MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config file not found for Tip4serv\n") return end
         Tip4serv.Config.data = util.JSONToTable(data)
         -- Type verification of config file
         if type(Tip4serv.Config.data.key)~="string" then 
-            MsgC(Tip4serv.Colors.red,"Config.Key should be a string\n")
+            MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config.Key should be a string\n")
             Tip4serv.enabled = false
-        end 
+        end
         if(type(Tip4serv.Config.data.request_interval_in_minutes)~="number") then
-            if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then
-                MsgC(Tip4serv.Colors.red,"Config.request_interval_in_minutes should be a number\n")
+            if tonumber(Tip4serv.Config.data.request_interval_in_minutes) == nil then -- Allow string (for compatibility with the old config file)
+                MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config.request_interval_in_minutes should be a number\n")
                 Tip4serv.enabled = false
             end
         end
         if(type(Tip4serv.Config.data.order_received_text)~="string") then
-            MsgC(Tip4serv.Colors.red,"Config.order_received_text should be a string\n")
+            MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Config.order_received_text should be a string\n")
             Tip4serv.enabled = false
         end        
         -- Handle order received message if it is bigger than 255 bytes
         if string.len(Tip4serv.Config.data.order_received_text) > 230 then
             Tip4serv.Config.data.order_received_text = string.sub(Tip4serv.Config.data.order_received_text,1,230)
-            MsgC(Tip4serv.Colors.red,"Order Received text is too long please make a shorter message\n")
+            MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Order Received text is too long please make a shorter message\n")
         end
     end
 
@@ -82,7 +85,7 @@ if not Tip4serv then
         http.Fetch(statusUrl,function(tip4serv_response,size,headers,statusCode)
             if (statusCode ~= 200 or tip4serv_response == nil) then
                 if (get_cmd == false) then
-                    MsgC(Tip4serv.Colors.red,"Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
+                    MsgC(Tip4serv.Colors.red,Tip4serv.Prefix.msgc.." Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
                 end
                 return
             end                
@@ -145,8 +148,8 @@ if not Tip4serv then
     
     -- Verify if the secret key is valid
     Tip4serv.check_api_key_validity = function() 
-        local missing_key = "[Tip4serv error] Please set key to a valid API key in data/tip4serv/config.json then restart tip4serv resource. Make sure you have copied the entire key on Tip4serv.com (CTRL+A then CTRL+C)"
-        local key_arr = {} 
+        local missing_key = Tip4serv.Prefix.msgc.." Set KEY to a valid API key in data/tip4serv/config.json then type: tip4serv connect (Find your key here: https://tip4serv.com/dashboard/my-servers)"
+        local key_arr = {}
         local i = 0
         for info in string.gmatch(Tip4serv.Config.data.key, '([^.]+)') do key_arr[i] = info i = i+1 end
         if (i ~= 3) then
@@ -159,8 +162,8 @@ if not Tip4serv then
     -- Sends the thank you message to player
     Tip4serv.send_chat_message = function(msg,ply)
         if rawget(Tip4serv.MessageCache,ply:SteamID64()) == nil then 
-            ply:ChatPrint(Tip4serv.Config.data.order_received_text) --Message is already limited to 230 characters so no overflow can happen
-            Tip4serv.MessageCache[ply:SteamID64()] = true --player won't receive any message anymore...
+            ply:ChatPrint(Tip4serv.Config.data.order_received_text) -- Message is already limited to 230 characters so no overflow can happen
+            Tip4serv.MessageCache[ply:SteamID64()] = true -- Player won't receive any message anymore...
         end
     end
     
@@ -171,17 +174,17 @@ if not Tip4serv then
     
     -- Returns every steam id that are currently waiting for their purchases
     Tip4serv.getCustomers = function ( data )
-        local customers = {} --hashmap of customers (will store player object)
+        local customers = {} -- Hashmap of customers (will store player object)
         for k,infos in ipairs(data) do 
-            customers[infos["steamid"]] = 1 --give them a random value
+            customers[infos["steamid"]] = 1 -- Give them a random value
         end
         return customers
     end
 
     -- Set all the connected flags to the customers who are currently waiting their delivery
     Tip4serv.checkifPlayerIsLoaded = function(data) 
-        local tip4Customers = Tip4serv.getCustomers(data) -- this object only store steam id and will be deleted after
-        local customers = {} --Hashmap <SteamID64,Player> 
+        local tip4Customers = Tip4serv.getCustomers(data) -- This object only store steam id and will be deleted after
+        local customers = {} -- Hashmap <SteamID64,Player> 
         for i,connectedPlayer in ipairs(player.GetAll()) do
             if rawget(tip4Customers,connectedPlayer:SteamID64()) ~= nil then -- We use rawget for optimisation purposes
                 customers[connectedPlayer:SteamID64()] = connectedPlayer -- We set the player for connected
@@ -190,7 +193,7 @@ if not Tip4serv then
         return customers
     end
 
-    -- Custom Base64 encode for tip4serv
+    -- Custom Base64 encode for Tip4serv
     Tip4serv.base64_encode = function ( data )
         -- We are using Tip4serv.base64_encode because it is slightly different than 
         -- utils.Base64 encoding algorithm so the result between this function and ours will be differents
@@ -226,9 +229,9 @@ if not Tip4serv then
     
     -- Execute commands on the server
     Tip4serv.exe_command = function(cmd)        
-        MsgC(Tip4serv.Colors.green,"[Tip4serv] execute command: "..cmd.."\n")
+        MsgC(Tip4serv.Colors.green,Tip4serv.Prefix.msgc.." execute command: "..cmd.."\n")
         local argv_gmod = string.Split(cmd," ")
-        local main_cmd = argv_gmod[1] -- Index starts at 1 -- 
+        local main_cmd = argv_gmod[1] -- Index starts at 1
         table.remove(argv_gmod,1)
         RunConsoleCommand(main_cmd,unpack(argv_gmod))
     end
