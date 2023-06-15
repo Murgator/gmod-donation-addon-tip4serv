@@ -121,6 +121,12 @@ You can use all the console commands of the addons that you have installed on yo
 
 `sa Give {steam_id} entity-name`
 
+## xAdmin commands
+
+***Set a player group:***
+
+`xadmin_setgroup {steam_id} group-name`
+
 ## Quantity multiplier
 
 You can also multiply the quantity choosen by the customer like this: `{quantity*50}`
