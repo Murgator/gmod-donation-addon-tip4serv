@@ -29,7 +29,7 @@ We take a 5% commission and that’s it ! You have access to all features with n
 
 ## Store available in 15 languages
 
-English, Danish, Dutch, English, French, German, Hungarian, Italian, Norwegian, Polish, Portuguese, Romanian, Russian, Spanish, Swedish and Turkish.
+English, Danish, Dutch, French, German, Hungarian, Italian, Norwegian, Polish, Portuguese, Romanian, Russian, Spanish, Swedish and Turkish.
 
 ## Several payment methods
 
