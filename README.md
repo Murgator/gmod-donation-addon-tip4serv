@@ -57,17 +57,17 @@ You can use all the console commands of the addons that you have installed on yo
 
 ## Steam ID format
 
-You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will be replaced by the player's steam id. {steam_id} is the same as {steam_id2}.
+You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will be replaced by the player's steam id.
 
 ## Give commands & broadcast
 
 ***Give entity to a player:***
 
-`tip4serv giveid {steam_id} entity-name`
+`tip4serv giveid {steam_id2} entity-name`
 
 ***Give ammo entity to a player:***
 
-`tip4serv giveid {steam_id} ammo-name quantity`
+`tip4serv giveid {steam_id2} ammo-name quantity`
 
 ***Send message to all players:***
 
@@ -79,11 +79,11 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 ***Add a player to a group:***
 
-`ulx adduserid {steam_id} group-name`
+`ulx adduserid {steam_id2} group-name`
 
 ***Remove a player from a group:***
 
-`ulx removeuserid {steam_id} group-name`
+`ulx removeuserid {steam_id2} group-name`
 
 [View all ULX commands](https://ulyssesmod.net/ulx_docs/ulx-commands)
 
@@ -91,45 +91,45 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 ***Give money to a player:***
 
-`tip4serv addmoneyid {steam_id} amount`
+`tip4serv addmoneyid {steam_id2} amount`
 
 ***Change player job:***
 
-`tip4serv jobid {steam_id} job-name`
+`tip4serv jobid {steam_id2} job-name`
 
 ## SAM commands
 
 ***Add a player to a rank:***
 
-`sam setrankid {steam_id} VIP`
+`sam setrankid {steam_id2} VIP`
 
 ***Remove a player from a rank:***
 
-`sam setrankid {steam_id} user`
+`sam setrankid {steam_id2} user`
 
 ## sAdmin commands
 
 ***Add a player to a group:***
 
-`sa Setrankid {steam_id} group-name`
+`sa Setrankid {steam_id2} group-name`
 
 ***Remove a player from a group:***
 
-`sa Removeuser {steam_id} group-name`
+`sa Removeuser {steam_id2} group-name`
 
 ***Give ammo to a player:***
 
-`sa Giveammo {steam_id} ammo-name amount`
+`sa Giveammo {steam_id2} ammo-name amount`
 
 ***Give entity to a player:***
 
-`sa Give {steam_id} entity-name`
+`sa Give {steam_id2} entity-name`
 
 ## xAdmin commands
 
 ***Set a player group:***
 
-`xadmin_setgroup {steam_id} group-name`
+`xadmin_setgroup {steam_id2} group-name`
 
 ## Quantity multiplier
 
@@ -139,7 +139,7 @@ Note: You must first activate the **Allow quantity choice** option in your produ
 
 Use this command on Tip4serv if you want to sell bundles of $200 with darkrp plugin:
 
-`tip4serv addmoneyid {steam_id} {quantity*200}`
+`tip4serv addmoneyid {steam_id2} {quantity*200}`
 
 This will run in your server console after a purchase if the player buys product 4 times:
 
