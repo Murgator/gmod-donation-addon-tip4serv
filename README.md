@@ -55,6 +55,12 @@ Here are some commands example you can use in the products configuration: [MY PR
 
 You can use all the console commands of the addons that you have installed on your server.
 
+## Steam ID format
+
+You can use {steam_id2} or {steam_id64}
+
+{steam_id} is the same as {steam_id2}
+
 ## Give commands & broadcast
 
 ***Give entity to a player:***
