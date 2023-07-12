@@ -57,7 +57,7 @@ You can use all the console commands of the addons that you have installed on yo
 
 ## Steam ID format
 
-You can use {steam_id2} or {steam_id64} in your commands, they will be replaced by the player's steam id. {steam_id} is the same as {steam_id2}.
+You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will be replaced by the player's steam id. {steam_id} is the same as {steam_id2}.
 
 ## Give commands & broadcast
 
