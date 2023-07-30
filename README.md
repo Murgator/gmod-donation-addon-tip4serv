@@ -69,6 +69,10 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 `tip4serv giveid {steam_id2} ammo-name quantity`
 
+***Give armor to a player:***
+
+`tip4serv givearmor {steam_id2} quantity`
+
 ***Send message to all players:***
 
 `tip4serv say Thank you {gmod_username} for your {total_paid} {currency} donation`
