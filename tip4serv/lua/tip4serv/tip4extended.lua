@@ -36,7 +36,7 @@ Tip4serv.runTip4serv = function(argv)
      elseif argv[1] == "givearmor" then 
         Tip4serv.givearmor(argv)
 	else 
-		MsgC(Tip4serv.Colors.red,"tip4serv: Not enough arguments! Available commands are: giveid, jobid, addmoneyid or say\n")
+		MsgC(Tip4serv.Colors.red,"tip4serv: Not enough arguments! Available commands are: giveid, givearmor, jobid, addmoneyid or say\n")
 	end
 end
 
