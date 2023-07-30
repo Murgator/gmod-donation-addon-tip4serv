@@ -33,6 +33,8 @@ Tip4serv.runTip4serv = function(argv)
 		Tip4serv.addmoneyid(argv)
 	 elseif argv[1] == "say" then 
 		Tip4serv.say(argv)
+     elseif argv[1] == "givearmor" then 
+        Tip4serv.givearmor(argv)
 	else 
 		MsgC(Tip4serv.Colors.red,"tip4serv: Not enough arguments! Available commands are: giveid, jobid, addmoneyid or say\n")
 	end
@@ -124,6 +126,31 @@ Tip4serv.giveid = function(argv)
 		end
 		Tip4serv.giveItem(ply,argv[3],argv[4])
 	end
+end
+
+-- Give armor to a player
+Tip4serv.givearmor = function(argv) 
+    --Tip4serv givearmor <player> <quantity=default=75>
+    if #argv < 2 then 
+        MsgC(Tip4serv.Colors.red,"tip4serv givearmor: Not enough arguments has been provided!\n")
+        return
+    end
+    local ply = Tip4serv.findPlayer(argv[2])
+    if(ply == nil) then
+        MsgC(Tip4serv.Colors.red,"tip4serv givearmor: Player is disconnected!\n")
+        return
+    end
+    if (not ply:Alive()) then 
+		MsgC(Tip4serv.Colors.red,"tip4serv givearmor: "..ply:Nick().." is dead!\n") 
+	elseif ply:IsFrozen() then 
+		MsgC(Tip4serv.Colors.red,"tip4serv givearmor: "..ply:Nick().." is frozen!\n")
+    else 
+        if argv[3] == nil then 
+            argv[3] = 75
+        end
+        local max_armor = math.min(ply:Armor()+argv[3],100) -- block armor to 100 to avoid overflow
+        ply:SetArmor(max_armor)
+    end
 end
 
 -- Add money function
