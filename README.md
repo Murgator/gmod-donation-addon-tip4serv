@@ -6,26 +6,29 @@ This addon connects your [Tip4serv.com](https://tip4serv.com/?ads=github) store 
 
 Tip4serv adds a layer of security using HMAC authentication to communicate. It is a strong authentication method that is used by banks [HMAC WIKI](https://en.wikipedia.org/wiki/HMAC)
 
-## Price
+## Features for starter plan (only 5% fee)
 
-We take a 5% commission and that’s it ! You have access to all features with no subscription required.
+- Unlimited game servers & commands
+- Create subscriptions plan
+- Commands status tracking
+- Stock management
+- Deliver roles & messages on Discord
+- Create discount coupon
+- Add managers for your store
+- Purchase email and invoice
+- Sales statistics
+- Private flow for subscribers
+- Custom sub-domain
+- Resend commands
+- No ads
 
-## Features
+## Features for PRO members (subscription required)
 
-* Unlimited game servers & commands
-* Create subscriptions plan
-* Commands status tracking
-* Stock management
-* Deliver roles & messages on Discord
-* Easily offer a product to a friend
-* Create discount coupon
-* Add managers for your store
-* Purchase email and invoice
-* Sales statistics
-* Private flow for subscribers
-* Custom sub-domain
-* Customize store colors
-* No ads
+- Dynamic Dark/Light theme
+- Account linking with avatars
+- Product page with gallery & video
+- GUI colors editor & additional CSS
+- Top customers & related products
 
 ## Store available in 15 languages
 
