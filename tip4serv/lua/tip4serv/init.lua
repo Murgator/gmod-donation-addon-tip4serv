@@ -1,5 +1,6 @@
 -- Tip4serv connect command
 concommand.Add("tip4serv",function(ply,cmd,args)
+
     -- Only allow commands directly from server
     if IsValid(ply) then return end
 	
@@ -10,6 +11,7 @@ concommand.Add("tip4serv",function(ply,cmd,args)
 		
         Tip4serv.Load()
     else
-        Tip4serv.runTip4serv(args)
+        Tip4serv.runTip4serv(args) 
+    
     end
 end)
