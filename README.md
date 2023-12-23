@@ -20,6 +20,7 @@ Tip4serv adds a layer of security using HMAC authentication to communicate. It i
 - Private flow for subscribers
 - Custom sub-domain
 - Resend commands
+- Permanent commands
 - No ads
 
 ## Features for PRO members (subscription required)
