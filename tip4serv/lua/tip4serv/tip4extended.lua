@@ -167,7 +167,7 @@ Tip4serv.giveItem = function(ply, item,quantity)
 		MsgC(Tip4serv.Colors.red,"Tip4serv give: Invalid item name\n")
 		return 
 	end
-	for i=0, quantity do 
+	for i=0, quantity-1 do 
 		ply:Give(item)
 	end
 end
