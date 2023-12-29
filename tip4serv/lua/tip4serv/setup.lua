@@ -15,7 +15,7 @@ Tip4serv.MessageCache = Tip4serv.MessageCache or {}
 
 Tip4serv.prefix_msgc = "[Tip4serv]"
 Tip4serv.response_path = "tip4serv/response.json"
-Tip4serv.version=1.3
+Tip4serv.version=1.4
 -- Color Caching
 Tip4serv.Colors.red = Color(255,0,0)
 Tip4serv.Colors.green = Color(0,255,0)
