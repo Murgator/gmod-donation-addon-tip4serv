@@ -99,7 +99,7 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 ***Give money to a player:***
 
-`tip4serv addmoneyid {steam_id2} amount`
+`tip4serv addmoneyid {steam_id2} 100000`
 
 ***Change player job:***
 
