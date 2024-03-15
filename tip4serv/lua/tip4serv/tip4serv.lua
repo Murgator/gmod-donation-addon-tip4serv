@@ -126,120 +126,118 @@ Tip4serv.check_pending_commands = function (server_id,public_key,private_key,tim
     -- MAC calculation      
     local MAC = Tip4serv.calculateHMAC(server_id, private_key, public_key, timestamp)
     
-    local response = ""
     local json_encoded = ""
+    local response = file.Read( Tip4serv.response_path, "DATA" )
 
-    file.AsyncRead( Tip4serv.response_path, "DATA", function( fileName, gamePath, status, data )
-        if ( status == FSASYNC_OK ) then
-            response = data
+    if ( response ~= nil ) then
+        response = data
             
-            if (string.len(response)>0) then
-                json_encoded = Tip4serv.urlencode(response)
-            end
+        if (string.len(response)>0) then
+            json_encoded = Tip4serv.urlencode(response)
         end
+    end
 
-        -- Build get_cmd query param
-        local get_cmd_tip4serv = "no"
-        if(get_cmd == true) then
-            get_cmd_tip4serv="yes"
+    -- Build get_cmd query param
+    local get_cmd_tip4serv = "no"
+    if(get_cmd == true) then
+        get_cmd_tip4serv="yes"
+    end
+    -- Request Tip4serv        
+    local statusUrl = "https://api.tip4serv.com/payments_api_v2.php?version="..Tip4serv.version.."&id="..server_id.."&time="..timestamp.."&json="..json_encoded.."&get_cmd="..get_cmd_tip4serv          
+    http.Fetch(statusUrl,function(tip4serv_response,size,headers,statusCode)
+        if (statusCode ~= 200 or tip4serv_response == nil) then
+            if (get_cmd == false) then
+                MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
+            end
+            return
         end
-        -- Request Tip4serv        
-        local statusUrl = "https://api.tip4serv.com/payments_api_v2.php?version="..Tip4serv.version.."&id="..server_id.."&time="..timestamp.."&json="..json_encoded.."&get_cmd="..get_cmd_tip4serv          
-        http.Fetch(statusUrl,function(tip4serv_response,size,headers,statusCode)
-            if (statusCode ~= 200 or tip4serv_response == nil) then
-                if (get_cmd == false) then
-                    MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
-                end
+        
+        -- Tip4serv connect
+        if (get_cmd == false) then
+            MsgC(Tip4serv.Colors.green,tip4serv_response.."\n") return
+        end
+            
+        -- Check for error
+        local json_decoded = util.JSONToTable(tip4serv_response)
+        if (json_decoded == nil) then
+            if string.match(tip4serv_response, "No pending payments found") then
+                file.Delete(Tip4serv.response_path)
+                return
+            elseif string.match(tip4serv_response, "Tip4serv") then
+                MsgC(Tip4serv.Colors.green,tip4serv_response.."\n")
                 return
             end
+        end
         
-            -- Tip4serv connect
-            if (get_cmd == false) then
-                MsgC(Tip4serv.Colors.green,tip4serv_response.."\n") return
+        -- Clear old json infos
+        file.Delete(Tip4serv.response_path)
+            
+        -- Loop customers
+        local new_json = {}
+            
+        -- Build a hash map about the current customers
+        customers = Tip4serv.checkifPlayerIsLoaded(json_decoded);
+        -- Loop all payments
+        for k,infos in ipairs(json_decoded) do
+            local new_obj = {} local new_cmds = {}
+            new_obj["date"] = os.date("%c")
+            new_obj["action"] = infos["action"]
+            -- Check if player is online and get username
+            local player_infos =  customers[infos["steamid"]]
+            if player_infos  then
+                -- Order received text will always be 255 bytes or less because we've substracted it's length at startup
+                Tip4serv.send_chat_message(Tip4serv.Config.data.order_received_text,player_infos)
             end
-            
-            -- Check for error
-            local json_decoded = util.JSONToTable(tip4serv_response)
-            if (json_decoded == nil) then
-                if string.match(tip4serv_response, "No pending payments found") then
-                    file.Delete(Tip4serv.response_path)
-                    return
-                elseif string.match(tip4serv_response, "Tip4serv") then
-                    MsgC(Tip4serv.Colors.green,tip4serv_response.."\n")
-                    return
-                end
-            end
-        
-            -- Clear old json infos
-            file.Delete(Tip4serv.response_path)
-            
-            -- Loop customers
-            local new_json = {}
-            
-            -- Build a hash map about the current customers
-            customers = Tip4serv.checkifPlayerIsLoaded(json_decoded);
-            -- Loop all payments
-            for k,infos in ipairs(json_decoded) do
-                local new_obj = {} local new_cmds = {}
-                new_obj["date"] = os.date("%c")
-                new_obj["action"] = infos["action"]
-                -- Check if player is online and get username
-                local player_infos =  customers[infos["steamid"]]
-                if player_infos  then
-                    -- Order received text will always be 255 bytes or less because we've substracted it's length at startup
-                    Tip4serv.send_chat_message(Tip4serv.Config.data.order_received_text,player_infos)
-                end
-                -- Execute commands for player
-                if type(infos["cmds"]) == "table" then                  
-                    for k,cmd in ipairs(infos["cmds"]) do
-                        -- If Tip4Serv ask us to delete events with expire 
-                        if cmd["expire"] ~= nil then 
+            -- Execute commands for player
+            if type(infos["cmds"]) == "table" then                  
+                for k,cmd in ipairs(infos["cmds"]) do
+                    -- If Tip4Serv ask us to delete events with expire 
+                    if cmd["expire"] ~= nil then 
                     
-                            --delete them using the identifier 
-                            Tip4Storage.delete_event(cmd["expire"],infos["steamid"])
-                            new_cmds[tostring(cmd["id"])] = 3 -- everything is ok
-                        else 
-                            --If there is events then also push events 
-                            if cmd["state"] > 1 then    
+                        --delete them using the identifier 
+                        Tip4Storage.delete_event(cmd["expire"],infos["steamid"])
+                        new_cmds[tostring(cmd["id"])] = 3 -- everything is ok
+                    else 
+                        --If there is events then also push events 
+                        if cmd["state"] > 1 then    
                                 
-                                if player_infos == nil or not Tip4MySQL.enabled then 
-                                    new_obj["status"]=14
-                                end
-                                if Tip4MySQL.enabled then 
-                                    Tip4Storage.push_event(cmd["str"],infos["steamid"],cmd["state"])
-                                end
+                            if player_infos == nil or not Tip4MySQL.enabled then 
+                                new_obj["status"]=14
                             end
-                            -- Do not run this command if the player must be online
-                            if (player_infos == nil and (string.match(cmd["str"], "{") or cmd["state"] >0)) then
-                                    new_obj["status"]=14
-                            else
-                                -- Replace option by player username
-                                if (player_infos and string.match(cmd["str"], "{gmod_username}")) then
-                                    cmd["str"] = string.gsub(cmd["str"], "{gmod_username}", player_infos:Nick())
-                                end
-                                if cmd["state"] >= 2 then 
-                                    if Tip4MySQL.enabled then 
-                                        Tip4serv.exe_command(cmd["str"])      
-                                        new_cmds[tostring(cmd["id"])] = 3
-                                    end
-                                else
+                            if Tip4MySQL.enabled then 
+                                Tip4Storage.push_event(cmd["str"],infos["steamid"],cmd["state"])
+                            end
+                        end
+                        -- Do not run this command if the player must be online
+                        if (player_infos == nil and (string.match(cmd["str"], "{") or cmd["state"] >0)) then
+                                new_obj["status"]=14
+                        else
+                            -- Replace option by player username
+                            if (player_infos and string.match(cmd["str"], "{gmod_username}")) then
+                                cmd["str"] = string.gsub(cmd["str"], "{gmod_username}", player_infos:Nick())
+                            end
+                            if cmd["state"] >= 2 then 
+                                if Tip4MySQL.enabled then 
                                     Tip4serv.exe_command(cmd["str"])      
                                     new_cmds[tostring(cmd["id"])] = 3
                                 end
+                            else
+                                Tip4serv.exe_command(cmd["str"])      
+                                new_cmds[tostring(cmd["id"])] = 3
                             end
                         end
                     end
-                    new_obj["cmds"] = new_cmds
-                    if new_obj["status"] == nil then new_obj["status"] = 3 end
-                    new_json[infos["id"]] = new_obj
                 end
+                new_obj["cmds"] = new_cmds
+                if new_obj["status"] == nil then new_obj["status"] = 3 end
+                new_json[infos["id"]] = new_obj
             end
+        end
 
-            -- Save the new json file for API
-            file.Write( Tip4serv.response_path, util.TableToJSON( new_json ) )
+        -- Save the new json file for API
+        file.Write( Tip4serv.response_path, util.TableToJSON( new_json ) )
             
-        end, function(message) end, { ['Authorization'] = MAC })
-    end)
+    end, function(message) end, { ['Authorization'] = MAC })
 end    
 
 -- Verify if the secret key is valid
