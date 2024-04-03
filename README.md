@@ -139,9 +139,11 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 `xadmin_setgroup {steam_id2} group-name`
 
-## Permanent SWEPS/weapons [Require Permanent SWEPS](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)
+## Permanent SWEPS/weapons
 
 `perm_sweps_add {steam_id2} swep_class1`
+
+[Require Permanent SWEPS](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)
 
 ## Quantity multiplier
 
