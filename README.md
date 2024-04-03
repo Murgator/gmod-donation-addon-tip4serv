@@ -141,20 +141,20 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 ## Permanent SWEPS/weapons
 
-You have 2 solutions to give permanent weapons to player: 
+To provide players with permanent weapons, you have two options:
 
-***Use the [Permanent SWEPS addon](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)***
+***Option 1: Use the [Permanent SWEPS addon](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)***
 
 `perm_sweps_add {steam_id2} swep_class1`
 
-***Or use the tip4serv plugin database***
+***Option 2: Utilize the Tip4Serv addon's database feature***
 
-For this you must have MySQLOO installed on your Gmod server
+Before proceeding, ensure that **MySQLOO** is installed on your Garry's Mod (Gmod) server.
 
-1) You must then fill in the `mysql_` identifiers in the `garrysmod/data/tip4serv/config.json` file
-2) Type *tip4serv connect* in your Gmod server console.
-3) Edit your product in [MY PRODUCT](https://tip4serv.com/dashboard/my-products)
-5) In *Server commands*, add your Gmod server, add a command and select the option *Run each time the player spawns*
+1) Fill in the `mysql_` identifiers in the `garrysmod/data/tip4serv/config.json` file.
+2) Enter `tip4serv connect` into your Gmod server console.
+3) Edit your product in [MY PRODUCT](https://tip4serv.com/dashboard/my-products).
+4) In the `Server commands` section, add your Gmod server, create a command, and select the option `Run each time the player spawns`.
 
 ## Quantity multiplier
 
