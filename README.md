@@ -149,7 +149,7 @@ To provide players with permanent weapons, you have two options:
 
 ***Option 2: Utilize the Tip4Serv addon's database feature***
 
-Before proceeding, ensure that **MySQLOO** is installed on your Garry's Mod (Gmod) server.
+Before proceeding, ensure that **MySQLOO** is installed on your Garry's Mod server.
 
 1) Fill in the `mysql_` identifiers in the `garrysmod/data/tip4serv/config.json` file.
 2) Enter `tip4serv connect` into your Gmod server console.
