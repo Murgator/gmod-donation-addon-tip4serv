@@ -149,6 +149,8 @@ To provide players with permanent weapons, you have two options:
 
 ***Option 2: Utilize the Tip4Serv addon's database feature***
 
+This option is preferable if you intend to create a subscription. In such a scenario, the permanent commands will be disabled once the subscription expires.
+
 Before proceeding, ensure that **MySQLOO** is installed on your Garry's Mod server.
 
 1) Fill in the `mysql_` identifiers in the `garrysmod/data/tip4serv/config.json` file.
