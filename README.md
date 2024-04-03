@@ -139,6 +139,10 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 `xadmin_setgroup {steam_id2} group-name`
 
+## Permanent SWEPS/weapons [Require Permanent SWEPS](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)
+
+`perm_sweps_add {steam_id2} swep_class1`
+
 ## Quantity multiplier
 
 You can also multiply the quantity choosen by the customer like this: `{quantity*50}`
