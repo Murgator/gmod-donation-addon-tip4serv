@@ -143,11 +143,11 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 You have 2 solutions to give permanent weapons to player: 
 
-#Use the [Permanent SWEPS addon](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)
+***Use the [Permanent SWEPS addon](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)***
 
 `perm_sweps_add {steam_id2} swep_class1`
 
-#Use the tip4serv plugin database
+***Or use the tip4serv plugin database***
 
 For this you must have MySQLOO installed on your Gmod server
 
