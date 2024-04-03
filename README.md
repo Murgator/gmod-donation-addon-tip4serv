@@ -141,9 +141,9 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 ## Permanent SWEPS/weapons
 
-`perm_sweps_add {steam_id2} swep_class1`
+To give permanent weapons to players you can use the [Permanent SWEPS addon](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)
 
-[Require Permanent SWEPS](https://steamcommunity.com/sharedfiles/filedetails/?id=956066634)
+`perm_sweps_add {steam_id2} swep_class1`
 
 ## Quantity multiplier
 
