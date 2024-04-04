@@ -1,5 +1,5 @@
 Tip4serv.enabled = true
-
+Tip4serv.ready = false 
 -- CLASS METHODS
 
 -- Checks if a purchase has been made every x minutes
@@ -38,12 +38,14 @@ Tip4serv.config_sql_write = function()
 		["mysql_host"]="127.0.0.1",
 		["mysql_username"] = "root",
 		["mysql_password"] = "",
-		["mysql_db"]="YOUR_DB_NAME"
+		["mysql_db"]="YOUR_DB_NAME",
+		["mysql_enabled"]=false
 	}
 	Tip4serv.Config.data.mysql_host = "127.0.0.1"
 	Tip4serv.Config.data.mysql_username = "root"
 	Tip4serv.Config.data.mysql_password= ""
 	Tip4serv.Config.data.mysql_db="YOUR_DB_NAME"
+	Tip4serv.Config.data.mysql_enabled=false 
 	 file.Write( "tip4serv/config.json", util.TableToJSON( config_file,true ) )
 
 
@@ -101,18 +103,27 @@ Tip4serv.Load = function()
 				MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Config.mysql_db should be a string\n")
 				Tip4serv.enabled=false
 			end
-			if Tip4serv.Config.data.mysql_db ~= nil  and  Tip4serv.Config.data.mysql_db ~= "YOUR_DB_NAME" then 
+			if not isbool(Tip4serv.Config.data.mysql_enabled) then 
+				MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Config.mysql_enabled should be a boolean\n")
+				Tip4MySQL.Config.data.mysql_enabled = false
+			end
+			Tip4serv.load_my_sql()
+			if Tip4serv.Config.data.mysql_db ~= nil  and  Tip4serv.Config.data.mysql_db ~= "YOUR_DB_NAME" and Tip4serv.Config.data.mysql_enabled == true then 
 				Tip4MySQL.check_connection(Tip4serv.Config.data.mysql_host,
 				Tip4serv.Config.data.mysql_username,
 				Tip4serv.Config.data.mysql_password,
 				Tip4serv.Config.data.mysql_db)
 			else 
 				Tip4MySQL.enabled=false
-				MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Please update config.json if you want to use the storage feature\n")
-
+				if Tip4serv.ready == true then 
+					MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Please update config.json if you want to use the storage feature\n")
+				else 
+					Tip4serv.ready = true
+				end
 			end
 			-- Check our connection
 			Tip4serv_CheckConnection()
+	
 		else
 			MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Config file not found for Tip4serv\n")
 		end
@@ -121,25 +132,17 @@ end
 
 -- MAIN FUNCTIONS
 
+Tip4serv.load_my_sql = function()
+	if Tip4serv.Config.data.mysql_enabled == true then 
+		include("tip4serv/tip4mysql.lua")
+		include("tip4serv/tip4storage.lua")
+	end
+
+end
+
 -- Retrieve transactions, handle transactions & send transaction status
-Tip4serv.check_pending_commands = function (server_id,public_key,private_key,timestamp,get_cmd)
-    -- MAC calculation      
-    local MAC = Tip4serv.calculateHMAC(server_id, private_key, public_key, timestamp)
-	
-	local response = ""
-	local json_encoded = ""
-
-	file.AsyncRead( Tip4serv.response_path, "DATA", function( fileName, gamePath, status, data )
-		if ( status == FSASYNC_OK ) then
-			response = data
-			
-			if (string.len(response)>0) then
-				json_encoded = Tip4serv.urlencode(response)
-			end
-		end
-
-		-- Build get_cmd query param
-		local get_cmd_tip4serv = "no"
+Tip4serv.call_api = function(server_id,timestamp,get_cmd,MAC,json_encoded)
+	local get_cmd_tip4serv = "no"
 		if(get_cmd == true) then
 			get_cmd_tip4serv="yes"
 		end
@@ -171,7 +174,7 @@ Tip4serv.check_pending_commands = function (server_id,public_key,private_key,tim
 			end
 		
 			-- Clear old json infos
-			file.Delete(Tip4serv.response_path)
+			file.Write(Tip4serv.response_path,"{}")
 			
 			-- Loop customers
 			local new_json = {}
@@ -239,7 +242,29 @@ Tip4serv.check_pending_commands = function (server_id,public_key,private_key,tim
 			file.Write( Tip4serv.response_path, util.TableToJSON( new_json ) )
 			
 		end, function(message) end, { ['Authorization'] = MAC })
-	end)
+end
+Tip4serv.check_pending_commands = function (server_id,public_key,private_key,timestamp,get_cmd)
+    -- MAC calculation      
+    local MAC = Tip4serv.calculateHMAC(server_id, private_key, public_key, timestamp)
+	
+	local json_encoded = ""
+	local response = file.Read( Tip4serv.response_path, "DATA" )
+	if response == nil then 
+		file.AsyncRead( Tip4serv.response_path, "DATA", function( fileName, gamePath, status, data )
+			if ( status == FSASYNC_OK ) then
+				json_encoded = Tip4Serv.urlencode(data)
+				Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
+			else 
+				json_encoded = "{}"
+				Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
+			end
+		end)
+	else 
+		if (string.len(response)>0) then
+			json_encoded = Tip4serv.urlencode(response)
+			Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
+		end
+	end
 end    
 
 -- Verify if the secret key is valid
@@ -353,7 +378,8 @@ local function Tip4serv_InitializeAddon()
 		["mysql_host"]="127.0.0.1",
 		["mysql_username"] = "root",
 		["mysql_password"] = "",
-		["mysql_db"]="YOUR_DB_NAME"
+		["mysql_db"]="YOUR_DB_NAME",
+		["mysql_enabled"]=false 
 	}
 	
 	if not file.IsDir( "tip4serv", "DATA" ) then

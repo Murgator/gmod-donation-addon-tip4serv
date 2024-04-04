@@ -1,5 +1,9 @@
 Tip4MySQL.db  = Tip4MySQL.db or {}
 Tip4MySQL.connect_to_db = function(host,username,password,db_name) 
+    if mysqloo == nil then 
+        Tip4MySQL.enabled = false
+        return 
+    end
     Tip4MySQL.db = mysqloo.connect(host,username,password,db_name)
 
     function Tip4MySQL.db:onConnected(db) 
