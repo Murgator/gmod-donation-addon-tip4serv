@@ -139,6 +139,16 @@ You can use ***{steam_id2}*** or ***{steam_id64}*** in your commands, they will 
 
 `xadmin_setgroup {steam_id2} group-name`
 
+## VoidCases - Unboxing System
+
+VoidCases is a modern and fully customizable unboxing system which fits for every gamemode. It features a trading system, marketplace, high quality models with sexy animations, in-game config, and support for a lot of addons.
+
+***Give item to a player:***
+
+`voidcases_giveitem {steam_id64} itemid amount`
+
+[VoidCases addon required]([https://ulyssesmod.net/ulx_docs/ulx-commands](https://www.gmodstore.com/market/view/voidcases-unboxing-system)
+
 ## Permanent SWEPS/weapons
 
 To provide players with permanent weapons, you have two options:
