@@ -115,9 +115,7 @@ Tip4serv.Load = function()
 				Tip4serv.Config.data.mysql_db)
 			else 
 				Tip4MySQL.enabled=false
-				if Tip4serv.ready == true then 
-					MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Please update config.json if you want to use the storage feature\n")
-				else 
+				if Tip4serv.ready == false then 
 					Tip4serv.ready = true
 				end
 			end
