@@ -147,7 +147,7 @@ VoidCases is a modern and fully customizable unboxing system which fits for ever
 
 `voidcases_giveitem {steam_id64} itemid amount`
 
-[VoidCases addon required]([https://ulyssesmod.net/ulx_docs/ulx-commands](https://www.gmodstore.com/market/view/voidcases-unboxing-system)
+[VoidCases addon required](https://www.gmodstore.com/market/view/voidcases-unboxing-system)
 
 ## Permanent SWEPS/weapons
 
