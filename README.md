@@ -164,9 +164,10 @@ This option is preferable if you intend to create a subscription. In such a scen
 Before proceeding, ensure that **MySQLOO** is installed on your Garry's Mod server.
 
 1) Fill in the `mysql_` identifiers in the `garrysmod/data/tip4serv/config.json` file.
-2) Enter `tip4serv connect` into your Gmod server console.
-3) Edit your product in [MY PRODUCT](https://tip4serv.com/dashboard/my-products).
-4) In the `Server commands` section, add your Gmod server, create a command, and select the option `Run each time the player spawns`.
+2) Set `mysql_enabled` to true
+3) Enter `tip4serv connect` into your Gmod server console.
+4) Edit your product in [MY PRODUCT](https://tip4serv.com/dashboard/my-products).
+5) In the `Server commands` section, add your Gmod server, create a command, and select the option `Run each time the player spawns`.
 
 ## Quantity multiplier
 
