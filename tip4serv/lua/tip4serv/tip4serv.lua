@@ -22,12 +22,11 @@ local function Tip4serv_CheckConnection()
 			Tip4serv_checkPayment_every_x_min()
 		end )
 	end
-	
+
 	local key_arr = Tip4serv.check_api_key_validity()
 	if key_arr  == false then
 		return
 	end
-	
 	Tip4serv.check_pending_commands(key_arr[0], key_arr[1], key_arr[2], os.time(os.date("!*t")),false)
 end
 Tip4serv.config_sql_write = function() 
@@ -115,7 +114,7 @@ Tip4serv.Load = function()
 				Tip4serv.Config.data.mysql_db)
 			else 
 				Tip4MySQL.enabled=false
-				if Tip4serv.ready == false then 
+				if Tip4serv.ready == false then
 					Tip4serv.ready = true
 				end
 			end
@@ -245,24 +244,14 @@ Tip4serv.check_pending_commands = function (server_id,public_key,private_key,tim
     -- MAC calculation      
     local MAC = Tip4serv.calculateHMAC(server_id, private_key, public_key, timestamp)
 	
-	local json_encoded = ""
+	local json_encoded = "{}"
 	local response = file.Read( Tip4serv.response_path, "DATA" )
-	if response == nil then 
-		file.AsyncRead( Tip4serv.response_path, "DATA", function( fileName, gamePath, status, data )
-			if ( status == FSASYNC_OK ) then
-				json_encoded = Tip4Serv.urlencode(data)
-				Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
-			else 
-				json_encoded = "{}"
-				Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
-			end
-		end)
-	else 
+	if response ~= nil then 
 		if (string.len(response)>0) then
 			json_encoded = Tip4serv.urlencode(response)
-			Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
 		end
 	end
+	Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
 end    
 
 -- Verify if the secret key is valid
