@@ -163,7 +163,7 @@ To provide players with permanent weapons, you have two options:
 
 `pw_take {steam_id2} WEAPON_CLASS`
 
-***Option 3: Utilize the Tip4Serv addon's database feature***
+***Option 3: Configure the Tip4Serv addon's database feature***
 
 This option is preferable if you intend to create a subscription. In such a scenario, the permanent commands will be disabled once the subscription expires.
 
