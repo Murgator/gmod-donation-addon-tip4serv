@@ -157,7 +157,7 @@ To provide players with permanent weapons, you have two options:
 
 `perm_sweps_add {steam_id2} swep_class1`
 
-***Option 2: Use the [PermaWeapons Gun Shop](https://www.gmodstore.com/market/view/permaweapons-permanent-weapons-shop)***
+***Option 2: Use the [PermaWeapons Gun Shop addon](https://www.gmodstore.com/market/view/permaweapons-permanent-weapons-shop)***
 
 `pw_give {steam_id2} WEAPON_CLASS`
 
