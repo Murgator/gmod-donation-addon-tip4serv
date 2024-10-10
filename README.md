@@ -157,7 +157,12 @@ To provide players with permanent weapons, you have two options:
 
 `perm_sweps_add {steam_id2} swep_class1`
 
-***Option 2: Utilize the Tip4Serv addon's database feature***
+***Option 2: Use the [PermaWeapons Gun Shop](https://www.gmodstore.com/market/view/permaweapons-permanent-weapons-shop)***
+
+`pw_give {steam_id2} WEAPON_CLASS`
+`pw_take {steam_id2} WEAPON_CLASS`
+
+***Option 3: Utilize the Tip4Serv addon's database feature***
 
 This option is preferable if you intend to create a subscription. In such a scenario, the permanent commands will be disabled once the subscription expires.
 
