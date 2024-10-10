@@ -160,6 +160,7 @@ To provide players with permanent weapons, you have two options:
 ***Option 2: Use the [PermaWeapons Gun Shop](https://www.gmodstore.com/market/view/permaweapons-permanent-weapons-shop)***
 
 `pw_give {steam_id2} WEAPON_CLASS`
+
 `pw_take {steam_id2} WEAPON_CLASS`
 
 ***Option 3: Utilize the Tip4Serv addon's database feature***
