@@ -199,7 +199,9 @@ Tip4serv.call_api = function(server_id,timestamp,get_cmd,MAC,json_encoded)
 					if cmd["expire"] ~= nil then 
 					
 						--delete them using the identifier 
-						Tip4Storage.delete_event(cmd["expire"],infos["steamid"])
+						if Tip4MySQL.enabled then 
+							Tip4Storage.delete_event(cmd["expire"],infos["steamid"])
+						end
 						new_cmds[tostring(cmd["id"])] = 3 -- everything is ok
 					else 
 						--If there is events then also push events 
