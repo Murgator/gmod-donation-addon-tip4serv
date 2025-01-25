@@ -145,9 +145,9 @@ Tip4serv.call_api = function(server_id,timestamp,get_cmd,MAC,json_encoded)
 	end
 	-- Request Tip4serv        
 	local ApiUrl = "https://api.tip4serv.com/payments_api_v2.php?version="..Tip4serv.version.."&id="..server_id.."&time="..timestamp     
-	local EntireApiUrl = ApiUrl.."&json="..json_encoded.."&get_cmd="..get_cmd_tip4serv
+	local EntireApiUrl = ApiUrl.."&get_cmd="..get_cmd_tip4serv
 
-	http.Fetch(EntireApiUrl,function(tip4serv_response,size,headers,statusCode)
+	http.Post(EntireApiUrl, { json = json_encoded }, function(tip4serv_response,size,headers,statusCode)
 		if (statusCode ~= 200 or tip4serv_response == nil) then
 			if (get_cmd == false) then
 				MsgC(Tip4serv.Colors.red,Tip4serv.prefix_msgc.." Tip4serv API is temporarily unavailable, maybe you are making too many requests. Please try again later\n") return    
@@ -248,8 +248,8 @@ Tip4serv.call_api = function(server_id,timestamp,get_cmd,MAC,json_encoded)
 
         -- Update commands status on tip4serv if a command has been delivered
 		if update_now == true then
-			local EntireApiUrl = ApiUrl.."&json="..new_json.."&get_cmd=update"
-			http.Fetch(EntireApiUrl,function(tip4serv_response,size,headers,statusCode)
+			local EntireApiUrl = ApiUrl.."&get_cmd=update"
+			http.Post(EntireApiUrl, { json = new_json }, function(tip4serv_response,size,headers,statusCode)
 				if (statusCode == 200 and tip4serv_response != nil) then
 					file.Write(Tip4serv.response_path,"{}")
 					return
@@ -267,7 +267,7 @@ Tip4serv.check_pending_commands = function (server_id,public_key,private_key,tim
 	local response = file.Read( Tip4serv.response_path, "DATA" )
 	if response ~= nil then 
 		if (string.len(response)>0) then
-			json_encoded = Tip4serv.urlencode(response)
+			json_encoded = response
 		end
 	end
 	Tip4serv.call_api(server_id,timestamp,get_cmd,MAC,json_encoded)
@@ -350,17 +350,6 @@ end
 Tip4serv.calculateHMAC = function (server_id, public_key, private_key, timestamp)
     local datas = server_id..public_key..timestamp
     return Tip4serv.base64_encode(sha256.hmac_sha256(private_key, datas))
-end
-    
--- URL Encoding algorithm for sending transaction data
-Tip4serv.urlencode = function(url)
-    if url == nil then
-        return
-    end
-    url = url:gsub("\n", "\r\n")
-    url = url:gsub("([^%w ])", Tip4serv.char_to_hex)
-    url = url:gsub(" ", "+")
-    return url
 end
 
 -- Execute commands on the server
